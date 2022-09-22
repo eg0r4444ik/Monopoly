@@ -7,14 +7,13 @@ import java.util.ArrayList;
 public class Company extends Cell {
 
     private String name;
-    private int purchasePrice, size, countOfBuildings, supplyPrice;
+    private int purchasePrice, countOfBuildings, supplyPrice;
 
 
-    public Company(String name, int purchasePrice, int size, int countOfBuildings, int supplyPrice) {
-        super(new ArrayList<>(), new Coord(0,0), Type.START, 0);
+    public Company(String name, int purchasePrice, int countOfBuildings, int supplyPrice) {
+        super(new ArrayList<>(), new Coord(0,0), Type.COMPANY, 30);
         this.name = name;
         this.purchasePrice = purchasePrice;
-        this.size = size;
         this.countOfBuildings = countOfBuildings;
         this.supplyPrice = supplyPrice;
     }
@@ -23,8 +22,9 @@ public class Company extends Cell {
         return countOfBuildings;
     }
 
-    public void setCountOfBuildings(int countOfBuildings) {
-        this.countOfBuildings = countOfBuildings;
+    public void buildCompany(){
+        this.countOfBuildings++;
+        this.supplyPrice *= 4;
     }
 
     public int getSupplyPrice() {
@@ -41,5 +41,13 @@ public class Company extends Cell {
 
     public void setPurchasePrice(int purchasePrice) {
         this.purchasePrice = purchasePrice;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

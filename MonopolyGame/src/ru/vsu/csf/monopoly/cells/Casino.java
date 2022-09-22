@@ -10,7 +10,7 @@ public class Casino extends Cell{
     private Random rnd = new Random();
 
     public Casino(){
-        super(new ArrayList<>(), new Coord(0,0), Type.START, 0);
+        super(new ArrayList<>(), new Coord(0,0), Type.START, 30);
     }
 
     public int play(int betSum, int[] bet){

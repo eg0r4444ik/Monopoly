@@ -16,7 +16,13 @@ public class Player {
     private List<Company> myCompanies;
     private int countOfDouble;
 
-
+    public Player(int currentPosition, int cash, PlayingField playingField, List<Company> myCompanies, int countOfDouble) {
+        this.currentPosition = currentPosition;
+        this.cash = cash;
+        this.playingField = playingField;
+        this.myCompanies = myCompanies;
+        this.countOfDouble = countOfDouble;
+    }
 
     public int[] rollDice(){
         rnd = new Random();
@@ -31,7 +37,7 @@ public class Player {
         return dice;
     }
 
-    public void go(){
+    private void go(){
         if(playingField.getCells().get(currentPosition).getType() == Type.START){
             cash+=2000;
         }
@@ -63,5 +69,39 @@ public class Player {
 
     }
 
+    public void build(Company company){
+        company.buildCompany();
+    }
 
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public int getCash() {
+        return cash;
+    }
+
+    public void setCash(int cash) {
+        this.cash = cash;
+    }
+
+    public List<Company> getMyCompanies() {
+        return myCompanies;
+    }
+
+    public void setMyCompanies(List<Company> myCompanies) {
+        this.myCompanies = myCompanies;
+    }
+
+    public int getCountOfDouble() {
+        return countOfDouble;
+    }
+
+    public void setCountOfDouble(int countOfDouble) {
+        this.countOfDouble = countOfDouble;
+    }
 }

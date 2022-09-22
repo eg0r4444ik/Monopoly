@@ -12,7 +12,7 @@ public class Chance extends Cell{
     Random rnd = new Random();
 
     public Chance() {
-        super(new ArrayList<>(), new Coord(0,0), Type.START, 0);
+        super(new ArrayList<>(), new Coord(0,0), Type.CHANCE, 30);
     }
 
     public enum Actions{

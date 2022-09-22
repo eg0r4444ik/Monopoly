@@ -5,5 +5,6 @@ public enum Type {
     CHANCE,
     PRISON,
     START,
-    CASINO;
+    CASINO,
+    RIALTO;
 }
