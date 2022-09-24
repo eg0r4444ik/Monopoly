@@ -8,6 +8,7 @@ public class Company extends Cell {
 
     private String name;
     private int purchasePrice, countOfBuildings, supplyPrice;
+    private boolean isBought = false;
 
 
     public Company(String name, int purchasePrice, int countOfBuildings, int supplyPrice) {
@@ -49,5 +50,17 @@ public class Company extends Cell {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCountOfBuildings(int countOfBuildings) {
+        this.countOfBuildings = countOfBuildings;
+    }
+
+    public boolean isBought() {
+        return isBought;
+    }
+
+    public void setBought(boolean bought) {
+        isBought = bought;
     }
 }

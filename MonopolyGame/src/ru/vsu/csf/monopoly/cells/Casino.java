@@ -15,6 +15,7 @@ public class Casino extends Cell{
 
     public int play(int betSum, int[] bet){
         int number = rnd.nextInt(5)+1;
+        System.out.println("Выпало число " + number);
         for(int i : bet){
             if(i == number){
                 return betSum*2;

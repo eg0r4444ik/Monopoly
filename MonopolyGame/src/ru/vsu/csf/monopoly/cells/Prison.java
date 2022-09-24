@@ -9,6 +9,8 @@ import java.util.List;
 public class Prison extends Cell{
 
     public Prison() {
-        super(new ArrayList<>(), new Coord(0, 0), Type.PRISON,30);
+        super(new ArrayList<>(), new Coord(0, 0), Type.RIALTO,30);
     }
+
+    
 }

@@ -53,7 +53,7 @@ public class PlayingField {
         cells.add(new Company("Burger King", 2600, 0, 220));
         cells.add(new Company("Rovio", 1500, 0, 1000));
         cells.add(new Company("KFC", 2800, 0, 240));
-        cells.add(new Prison());
+        cells.add(new Cell(new ArrayList<>(), new Coord(0, 0), Type.PRISON, 30));
         cells.add(new Company("Holiday Inn", 3000, 0, 260));
         cells.add(new Company("Radisson", 3000, 0, 260));
         cells.add(new Chance());

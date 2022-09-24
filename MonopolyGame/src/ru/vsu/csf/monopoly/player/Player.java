@@ -32,15 +32,14 @@ public class Player {
 
         if(dice[0] == dice[1]){
             countOfDouble++;
+        } else{
+            countOfDouble = 0;
         }
 
         return dice;
     }
 
     private void go(){
-        if(playingField.getCells().get(currentPosition).getType() == Type.START){
-            cash+=2000;
-        }
         if(currentPosition < playingField.getCells().size() - 1){
             currentPosition++;
         }
@@ -50,23 +49,37 @@ public class Player {
     }
 
     public void go(int[] dice){
-        int sum = dice[0] + dice[1];
-        while(sum != 0){
-            go();
-            sum--;
+        if(countOfDouble == 3){
+            currentPosition = 10;
+            countOfDouble = 0;
+        } else {
+            int sum = dice[0] + dice[1];
+            while (sum != 0) {
+                go();
+                sum--;
+            }
         }
     }
 
     public void buyCompany(){
-
         Cell currentCell = playingField.getCells().get(currentPosition);
 
         if (currentCell instanceof Company) {
             Company c = (Company) currentCell;
-            myCompanies.add(c);
-            cash -= c.getPurchasePrice();
+            if(!c.isBought()){
+                myCompanies.add(c);
+                cash -= c.getPurchasePrice();
+                c.setBought(true);
+            }
         }
+    }
 
+    public void payForVisit(){
+        Cell currentCell = playingField.getCells().get(currentPosition);
+        if(currentCell instanceof Company){
+            Company c = (Company) currentCell;
+            cash -= c.getSupplyPrice();
+        }
     }
 
     public void build(Company company){
@@ -103,5 +116,13 @@ public class Player {
 
     public void setCountOfDouble(int countOfDouble) {
         this.countOfDouble = countOfDouble;
+    }
+
+    public PlayingField getPlayingField() {
+        return playingField;
+    }
+
+    public void setPlayingField(PlayingField playingField) {
+        this.playingField = playingField;
     }
 }
