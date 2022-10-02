@@ -14,7 +14,7 @@ public class Chance extends Cell{
     private Actions action;
 
     public Chance() {
-        super(new ArrayList<>(), new Coord(0,0), Type.CHANCE, 30);
+        super(new Coord(0,0), Type.CHANCE, 30);
         this.action = Actions.values()[rnd.nextInt(Actions.values().length)];
     }
 
@@ -26,8 +26,7 @@ public class Chance extends Cell{
         GO_TO_PRISON;
     }
 
-    public String toString(Actions a){
-        Player player = getPlayers().get(getPlayers().size()-1);
+    public String toString(Actions a, Player player){
         if(a == Actions.GET_1000){
             player.setCash(player.getCash()+1000);
             return "Пользователь получает 1000";
@@ -45,9 +44,22 @@ public class Chance extends Cell{
         }
         if(a == Actions.GO_TO_PRISON){
             player.setCurrentPosition(10);
+            player.setPrisonForVisit(false);
             return "Нарушил закон и отправляешься в тюрьму";
         }
         return "";
+    }
+
+    public void makeMove(Player player){
+        System.out.println("Вы попали на поле шанс");
+        System.out.println(toString(getAction(), player));
+        if(getAction() != Chance.Actions.GO_TO_PRISON){
+            System.out.println("Ваш бюджет: " + player.getCash());
+        } else{
+            player.setPrisonForVisit(false);
+            player.setCurrentPosition(10);
+        }
+        this.action = Actions.values()[rnd.nextInt(Actions.values().length)];
     }
 
     public Actions getAction() {

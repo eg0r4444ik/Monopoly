@@ -5,16 +5,18 @@ import ru.vsu.csf.monopoly.cells.Cell;
 import ru.vsu.csf.monopoly.cells.Company;
 import ru.vsu.csf.monopoly.cells.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 public class Player {
 
     private Random rnd;
+    private boolean prisonForVisit = true;
     private int currentPosition;
     private int cash;
     private PlayingField playingField;
     private List<Company> myCompanies;
-    private int countOfDouble;
+    private int countOfDouble, countOfThrowsInPrison = 0;
 
     public Player(int currentPosition, int cash, PlayingField playingField, List<Company> myCompanies, int countOfDouble) {
         this.currentPosition = currentPosition;
@@ -70,6 +72,13 @@ public class Player {
                 myCompanies.add(c);
                 cash -= c.getPurchasePrice();
                 c.setBought(true);
+                if((c.getCompanyType() == Company.CompanyType.AUTO || c.getCompanyType() == Company.CompanyType.GAME) && countTypeCompany(c.getCompanyType()) > 1){
+                    for (Company com: myCompanies) {
+                        if(com.getCompanyType() == c.getCompanyType()){
+                            com.setSupplyPrice(com.getSupplyPrice()*2);
+                        }
+                    }
+                }
             }
         }
     }
@@ -82,8 +91,42 @@ public class Player {
         }
     }
 
-    public void build(Company company){
-        company.buildCompany();
+    public int countTypeCompany(Company.CompanyType type){
+        int count = 0;
+        for(Company c : myCompanies){
+            if(c.getCompanyType() == type){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public boolean haveAllCompanies(Company company){
+        int count = 0;
+        for (Company c: myCompanies) {
+            if(c.getCompanyType() == company.getCompanyType()){
+                count++;
+            }
+        }
+        if(count == company.getCountToBuy()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public List<Company> getCompaniesToBuild(){
+        List<Company> comp = new ArrayList<>();
+        for (Company c: myCompanies) {
+            if(haveAllCompanies(c)){
+                comp.add(c);
+            }
+        }
+        return comp;
+    }
+
+    public boolean build(Company company){
+        return company.buildCompany(this);
     }
 
     public int getCurrentPosition() {
@@ -124,5 +167,21 @@ public class Player {
 
     public void setPlayingField(PlayingField playingField) {
         this.playingField = playingField;
+    }
+
+    public boolean isPrisonForVisit() {
+        return prisonForVisit;
+    }
+
+    public void setPrisonForVisit(boolean prisonForVisit) {
+        this.prisonForVisit = prisonForVisit;
+    }
+
+    public int getCountOfThrowsInPrison() {
+        return countOfThrowsInPrison;
+    }
+
+    public void setCountOfThrowsInPrison(int countOfThrowsInPrison) {
+        this.countOfThrowsInPrison = countOfThrowsInPrison;
     }
 }
