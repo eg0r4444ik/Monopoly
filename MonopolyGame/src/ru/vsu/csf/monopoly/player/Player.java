@@ -108,7 +108,7 @@ public class Player {
                 count++;
             }
         }
-        if(count == company.getCountToBuy()){
+        if(count == company.getCountToBuy() && company.getCountOfBuildings() < 5){
             return true;
         }else{
             return false;
