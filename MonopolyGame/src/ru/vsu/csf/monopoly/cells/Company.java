@@ -46,6 +46,7 @@ public class Company extends Cell {
         if(player.haveAllCompanies(this)) {
             this.countOfBuildings++;
             this.supplyPrice *= 4;
+            player.setCash(player.getCash() - 1500);
             return true;
         }
         return false;

@@ -65,18 +65,23 @@ public class TextGame {
                 if(player.getCompaniesToBuild().size() == 0){
                     System.out.println("У вас нет компаний, в которых вы можете построить филиалы");
                 } else {
-                    System.out.println("Вот список ваших компаний, в которых вы можете строить филиалы: ");
-                    for (int k = 0; k < player.getCompaniesToBuild().size(); k++) {
-                        System.out.println((k + 1) + " - " + player.getCompaniesToBuild().get(k).getName());
+                    System.out.println("Стоимость постройки филиала 1500");
+                    if(player.getCash() >= 1500) {
+                        System.out.println("Вот список ваших компаний, в которых вы можете строить филиалы: ");
+                        for (int k = 0; k < player.getCompaniesToBuild().size(); k++) {
+                            System.out.println((k + 1) + " - " + player.getCompaniesToBuild().get(k).getName());
+                        }
+                        System.out.println("Выберете компанию");
+                        int command = scanner.nextInt();
+                        while (command < 1 || command > player.getCompaniesToBuild().size()) {
+                            System.out.println("Введенная команда неверная попробуйте заново");
+                            command = scanner.nextInt();
+                        }
+                        player.build(player.getCompaniesToBuild().get(command - 1));
+                        System.out.println("Теперь стоимость посещения данной компании: " + player.getCompaniesToBuild().get(command - 1).getSupplyPrice());
+                    } else{
+                        System.out.println("У вас недостаточно средств");
                     }
-                    System.out.println("Выберете компанию");
-                    int command = scanner.nextInt();
-                    while (command < 1 || command > player.getCompaniesToBuild().size()) {
-                        System.out.println("Введенная команда неверная попробуйте заново");
-                        command = scanner.nextInt();
-                    }
-                    player.build(player.getCompaniesToBuild().get(command - 1));
-                    System.out.println("Теперь стоимость посещения данной компании: " + player.getCompaniesToBuild().get(command - 1).getSupplyPrice());
                 }
                 chooseCommand(player);
                 break;
