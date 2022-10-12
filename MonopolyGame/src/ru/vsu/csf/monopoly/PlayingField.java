@@ -1,9 +1,7 @@
 package ru.vsu.csf.monopoly;
 
 import ru.vsu.csf.monopoly.cells.*;
-import ru.vsu.csf.monopoly.cells.util.Coord;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayingField {
@@ -23,7 +21,7 @@ public class PlayingField {
     }
 
     public void generateField() {
-        cells.add(new Cell(new Coord(0, 0), Type.START, 30));
+        cells.add(new Start());
         cells.add(new Company("Chanel", 600, 0, 20, Company.CompanyType.WEAR, 2));
         cells.add(new Chance());
         cells.add(new Company("Hugo Boss", 600, 0, 40, Company.CompanyType.WEAR, 2));
@@ -33,7 +31,7 @@ public class PlayingField {
         cells.add(new Chance());
         cells.add(new Company("Puma", 1000, 0, 60, Company.CompanyType.SPORT_WEAR, 3));
         cells.add(new Company("Lacoste", 1200, 0, 80, Company.CompanyType.SPORT_WEAR, 3));
-        cells.add(new Prison());
+        cells.add(new Rialto());
         cells.add(new Company("VK", 1400, 0, 100, Company.CompanyType.SOCIAL_NETWORK, 3));
         cells.add(new Company("RStar", 1500, 0, 1000, Company.CompanyType.GAME, 10));
         cells.add(new Company("Facebook", 1400, 0, 100, Company.CompanyType.SOCIAL_NETWORK, 3));
@@ -53,7 +51,7 @@ public class PlayingField {
         cells.add(new Company("Burger King", 2600, 0, 220, Company.CompanyType.FAST_FOOD, 3));
         cells.add(new Company("Rovio", 1500, 0, 1000, Company.CompanyType.GAME, 10));
         cells.add(new Company("KFC", 2800, 0, 240, Company.CompanyType.FAST_FOOD, 3));
-        cells.add(new Cell(new Coord(0, 0), Type.PRISON, 30));
+        cells.add(new Prison());
         cells.add(new Company("Holiday Inn", 3000, 0, 260, Company.CompanyType.HOTEL, 3));
         cells.add(new Company("Radisson", 3000, 0, 260, Company.CompanyType.HOTEL, 3));
         cells.add(new Chance());

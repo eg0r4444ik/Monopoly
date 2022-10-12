@@ -3,7 +3,6 @@ package ru.vsu.csf.monopoly.player;
 import ru.vsu.csf.monopoly.PlayingField;
 import ru.vsu.csf.monopoly.cells.Cell;
 import ru.vsu.csf.monopoly.cells.Company;
-import ru.vsu.csf.monopoly.cells.Type;
 
 import java.util.ArrayList;
 import java.util.List;

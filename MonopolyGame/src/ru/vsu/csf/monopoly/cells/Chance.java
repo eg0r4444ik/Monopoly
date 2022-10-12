@@ -1,5 +1,6 @@
 package ru.vsu.csf.monopoly.cells;
 
+import ru.vsu.csf.monopoly.Game;
 import ru.vsu.csf.monopoly.cells.util.Coord;
 import ru.vsu.csf.monopoly.player.Player;
 
@@ -14,7 +15,7 @@ public class Chance extends Cell{
     private Actions action;
 
     public Chance() {
-        super(new Coord(0,0), Type.CHANCE, 30);
+        super(new Coord(0,0), 30);
         this.action = Actions.values()[rnd.nextInt(Actions.values().length)];
     }
 
@@ -50,11 +51,11 @@ public class Chance extends Cell{
         return "";
     }
 
-    public void makeMove(Player player){
-        System.out.println("Вы попали на поле шанс");
-        System.out.println(toString(getAction(), player));
+    public void makeMove(Player player, Game game){
+        game.printStr("Вы попали на поле шанс");
+        game.printStr(toString(getAction(), player));
         if(getAction() != Chance.Actions.GO_TO_PRISON){
-            System.out.println("Ваш бюджет: " + player.getCash());
+            game.printStr("Ваш бюджет: " + player.getCash());
         } else{
             player.setPrisonForVisit(false);
             player.setCurrentPosition(10);

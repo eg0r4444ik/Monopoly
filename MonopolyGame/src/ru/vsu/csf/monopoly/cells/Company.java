@@ -1,5 +1,6 @@
 package ru.vsu.csf.monopoly.cells;
 
+import ru.vsu.csf.monopoly.Game;
 import ru.vsu.csf.monopoly.cells.util.Coord;
 import ru.vsu.csf.monopoly.player.Player;
 
@@ -14,7 +15,7 @@ public class Company extends Cell {
     private CompanyType type;
 
 
-    public enum CompanyType{
+    public enum CompanyType {
         WEAR,
         SPORT_WEAR,
         SOCIAL_NETWORK,
@@ -29,7 +30,7 @@ public class Company extends Cell {
 
 
     public Company(String name, int purchasePrice, int countOfBuildings, int supplyPrice, CompanyType type, int countToBuy) {
-        super(new Coord(0,0), Type.COMPANY, 30);
+        super(new Coord(0, 0), 30);
         this.name = name;
         this.purchasePrice = purchasePrice;
         this.countOfBuildings = countOfBuildings;
@@ -42,8 +43,8 @@ public class Company extends Cell {
         return countOfBuildings;
     }
 
-    public boolean buildCompany(Player player){
-        if(player.haveAllCompanies(this)) {
+    public boolean buildCompany(Player player) {
+        if (player.haveAllCompanies(this)) {
             this.countOfBuildings++;
             this.supplyPrice *= 4;
             player.setCash(player.getCash() - 1500);
@@ -52,28 +53,27 @@ public class Company extends Cell {
         return false;
     }
 
-    public void makeMove(Player player){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Вы попали на компанию " + getName());
-        if(isBought() && !player.getMyCompanies().contains(this)){
-            System.out.println("С вас списалось " + getSupplyPrice() + " за посещение");
+    public void makeMove(Player player, Game game) {
+        game.printStr("Вы попали на компанию " + getName());
+        if (isBought() && !player.getMyCompanies().contains(this)) {
+            game.printStr("С вас списалось " + getSupplyPrice() + " за посещение");
             player.payForVisit();
-            System.out.println("Ваш текущий баланс: " + player.getCash());
-        } else{
-            System.out.println("Введите: ");
-            System.out.println("1 - купить компанию за " + getPurchasePrice());
-            System.out.println("2 - не покупать");
-            int n = scanner.nextInt();
+            game.printStr("Ваш текущий баланс: " + player.getCash());
+        } else {
+            int n = 0;
+            if(game.isTextGame()){
+                n = game.getTxt().chooseCompanyCommand(this);
+            }
             while (n != 1 && n != 2) {
-                System.out.println("Введенная вами команда неверная, повторите попытку");
-                n = scanner.nextInt();
+                game.printStr("Введенная вами команда неверная, повторите попытку");
+                n = game.getTxt().chooseCompanyCommand(this);
             }
             if (n == 1 && player.getCash() >= purchasePrice) {
                 player.buyCompany();
-                System.out.println("Ваш бюджет: " + player.getCash());
+                game.printStr("Ваш бюджет: " + player.getCash());
             }
-            if(n == 1 && player.getCash() < purchasePrice){
-                System.out.println("Вам не хватает средств для покупки");
+            if (n == 1 && player.getCash() < purchasePrice) {
+                game.printStr("Вам не хватает средств для покупки");
             }
         }
     }

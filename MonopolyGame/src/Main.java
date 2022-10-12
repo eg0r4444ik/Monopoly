@@ -1,3 +1,4 @@
+import ru.vsu.csf.monopoly.Game;
 import ru.vsu.csf.monopoly.PlayingField;
 import ru.vsu.csf.monopoly.TextGame;
 import ru.vsu.csf.monopoly.cells.*;
@@ -26,8 +27,8 @@ public class Main {
                 System.out.println("Введено недопустимое число, попробуйте ещё раз");
                 k = scanner.nextInt();
             }
-            TextGame txt = new TextGame(k);
-            txt.start();
+            Game game = new Game(k, true);
+            game.start();
         }
         if(n == 2){
 
