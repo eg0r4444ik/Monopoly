@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class TextGame{
+public class TextGame implements GameInterface{
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -156,7 +156,7 @@ public class TextGame{
         return k;
     }
 
-    public void displayTheInscription(String str){
+    public void printStr(String str){
         System.out.println(str);
     }
 }

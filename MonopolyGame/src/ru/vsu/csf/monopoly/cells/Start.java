@@ -1,15 +1,21 @@
 package ru.vsu.csf.monopoly.cells;
 
-import ru.vsu.csf.monopoly.cells.util.Coord;
+import ru.vsu.csf.monopoly.Game;
 import ru.vsu.csf.monopoly.player.Player;
 
-public class Start extends Cell{
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Start() {
-        super(new Coord(0,0), 30);
+public class Start extends Cell implements CellActions{
+
+    public Start(int x, int y, int sizeX, int sizeY, Color color, String inscription) {
+        super(x, y, sizeX, sizeY, color, inscription, new ArrayList<>());
     }
 
-    public void getMoney(Player player){
+    public void makeMove(Player player, Game game){
+        game.getG().printStr("Вы получаете 2000 за прохождение круга");
         player.setCash(player.getCash() + 2000);
+        game.getG().printStr("Ваш бюджет: " + player.getCash());
     }
 }

@@ -3,7 +3,9 @@ package ru.vsu.csf.monopoly.player;
 import ru.vsu.csf.monopoly.PlayingField;
 import ru.vsu.csf.monopoly.cells.Cell;
 import ru.vsu.csf.monopoly.cells.Company;
+import ru.vsu.csf.monopoly.graphics.DrawUtils;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,16 +15,22 @@ public class Player {
     private boolean prisonForVisit = true;
     private int currentPosition;
     private int cash;
+    private int x, y, size;
+    private Color color;
     private PlayingField playingField;
     private List<Company> myCompanies;
     private int countOfDouble, countOfThrowsInPrison = 0;
 
-    public Player(int currentPosition, int cash, PlayingField playingField, List<Company> myCompanies, int countOfDouble) {
+    public Player(int x , int y, int size, Color color, int currentPosition, int cash, PlayingField playingField, List<Company> myCompanies, int countOfDouble) {
         this.currentPosition = currentPosition;
         this.cash = cash;
         this.playingField = playingField;
         this.myCompanies = myCompanies;
         this.countOfDouble = countOfDouble;
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
     }
 
     public int[] rollDice(){
@@ -69,6 +77,7 @@ public class Player {
             Company c = (Company) currentCell;
             if(!c.isBought()){
                 myCompanies.add(c);
+                c.setColor(color);
                 cash -= c.getPurchasePrice();
                 c.setBought(true);
                 if((c.getCompanyType() == Company.CompanyType.AUTO || c.getCompanyType() == Company.CompanyType.GAME) && countTypeCompany(c.getCompanyType()) > 1){
@@ -122,6 +131,10 @@ public class Player {
             }
         }
         return comp;
+    }
+
+    public void draw(Graphics2D g){
+        DrawUtils.drawPlayer(g, x, y, size, color);
     }
 
     public boolean build(Company company){
@@ -182,5 +195,25 @@ public class Player {
 
     public void setCountOfThrowsInPrison(int countOfThrowsInPrison) {
         this.countOfThrowsInPrison = countOfThrowsInPrison;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }

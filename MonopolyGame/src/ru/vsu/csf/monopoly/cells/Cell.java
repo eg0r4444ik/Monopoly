@@ -1,69 +1,79 @@
 package ru.vsu.csf.monopoly.cells;
 
 import ru.vsu.csf.monopoly.Game;
-import ru.vsu.csf.monopoly.cells.util.Coord;
+import ru.vsu.csf.monopoly.graphics.DrawPanel;
+import ru.vsu.csf.monopoly.graphics.DrawUtils;
 import ru.vsu.csf.monopoly.player.Player;
+
+import java.awt.*;
+import java.util.List;
 
 public class Cell {
 
-    private Coord coord;
-    private int size;
+    private int x, y, sizeX, sizeY;
+    private Color color;
+    private String inscription;
+    private List<Player> players;
 
 
-    public Cell( Coord coord, int size) {
-        this.coord = coord;
-        this.size = size;
+    public Cell(int x, int y, int sizeX, int sizeY, Color color, String inscription, List<Player> players) {
+        this.x = x;
+        this.y = y;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.color = color;
+        this.inscription = inscription;
+        this.players = players;
     }
 
     public void makeMove(Player player, Game game){
-        if (this instanceof Company) {
-            Company company = (Company) this;
-            company.makeMove(player, game);
-        }
+        this.makeMove(player, game);
+    }
 
-        if (this instanceof Chance) {
-            Chance chance = (Chance) this;
-            chance.makeMove(player, game);
+    public void draw(Graphics2D g){
+        if(this instanceof Company){
+            Company c = (Company) this;
+            int price = 0;
+            if(c.isBought()){
+                price = c.getSupplyPrice();
+            } else{
+                price = c.getPurchasePrice();
+            }
+            DrawUtils.drawCell(g, x, y, sizeX, sizeY, color, inscription, price, c.getCompanyType());
+        } else{
+            DrawUtils.drawCell(g, x, y, sizeX, sizeY, color, inscription);
         }
-
-        if (this instanceof Start) {
-            Start start = (Start) this;
-            game.printStr("Вы получаете 2000 за прохождение круга");
-            start.getMoney(player);
-            game.printStr("Ваш бюджет: " + player.getCash());
+    }
+    public void drawPlayers(Graphics2D g){
+        if(players.size() == 1){
+            players.get(0).draw(g);
         }
-
-        if (this instanceof Rialto) {
-            Rialto rialto = (Rialto) this;
-            rialto.makeMove(player, game);
-        }
-
-        if (this instanceof Prison) {
-            Prison prison = (Prison) this;
-            game.printStr("Вы отправляетесь в тюрьму");
-            prison.visitPrison(player);
-            player.setPrisonForVisit(false);
-        }
-
-        if (this instanceof Casino) {
-            Casino casino = (Casino) this;
-            casino.makeMove(player, game);
+        if(players.size() > 1){
+            DrawUtils.drawPlayers(g, x, y, sizeX, sizeY, players);
         }
     }
 
-    public Coord getCoord() {
-        return coord;
+    public int getX() {
+        return x;
     }
 
-    public void setCoord(Coord coord) {
-        this.coord = coord;
+    public int getY() {
+        return y;
     }
 
-    public int getSize() {
-        return size;
+    public Color getColor() {
+        return color;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 }

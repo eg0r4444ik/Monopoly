@@ -1,22 +1,22 @@
 package ru.vsu.csf.monopoly.cells;
 
 import ru.vsu.csf.monopoly.Game;
-import ru.vsu.csf.monopoly.cells.util.Coord;
+
 import ru.vsu.csf.monopoly.player.Player;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Chance extends Cell{
+public class Chance extends Cell implements CellActions{
 
     private Random rnd = new Random();
     private Actions action;
 
-    public Chance() {
-        super(new Coord(0,0), 30);
-        this.action = Actions.values()[rnd.nextInt(Actions.values().length)];
+    public Chance(int x, int y, int sizeX, int sizeY, Color color, String inscription) {
+        super(x, y, sizeX, sizeY, color, inscription, new ArrayList<>());
     }
 
     public enum Actions{
@@ -52,10 +52,10 @@ public class Chance extends Cell{
     }
 
     public void makeMove(Player player, Game game){
-        game.printStr("Вы попали на поле шанс");
-        game.printStr(toString(getAction(), player));
+        game.getG().printStr("Вы попали на поле шанс");
+        game.getG().printStr(toString(getAction(), player));
         if(getAction() != Chance.Actions.GO_TO_PRISON){
-            game.printStr("Ваш бюджет: " + player.getCash());
+            game.getG().printStr("Ваш бюджет: " + player.getCash());
         } else{
             player.setPrisonForVisit(false);
             player.setCurrentPosition(10);

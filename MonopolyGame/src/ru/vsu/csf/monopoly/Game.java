@@ -1,30 +1,37 @@
 package ru.vsu.csf.monopoly;
 
 import ru.vsu.csf.monopoly.cells.*;
+import ru.vsu.csf.monopoly.graphics.MainWindow;
 import ru.vsu.csf.monopoly.player.Player;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Game {
     private int playersCount;
     private List<Player> players = new ArrayList<>();
-    private boolean isTextGame;
-    private TextGame txt = new TextGame();
+    private GameInterface g;
+    private PlayingField field;
+    private List<Color> colors = Arrays.asList(Color.RED, Color.BLUE, Color.ORANGE, Color.GREEN);
 
 
-    public Game(int playersCount, boolean isTextGame) {
+    public Game(int playersCount,GameInterface g, PlayingField field) {
         this.playersCount = playersCount;
-        this.isTextGame = isTextGame;
+        this.g = g;
+        this.field = field;
     }
 
     public void start(){
-        PlayingField field = new PlayingField(new ArrayList<>());
-        field.generateField();
+        MainWindow mw = new MainWindow(this);
+        mw.setVisible(true);
         for(int i = 0; i < playersCount; i++){
-            Player player = new Player(0, 15000, field, new ArrayList<>(), 0);
+            Player player = new Player(260, 35, 24, colors.get(i), 0, 15000, field, new ArrayList<>(), 0);
             players.add(player);
         }
+        Cell start = field.getCells().get(0);
+        start.setPlayers(players);
         while(!gameOver()){
             for(int i = 0; i < playersCount; i++){
                 Player player = players.get(i);
@@ -36,10 +43,8 @@ public class Game {
 
     public void chooseCommand(Player player){
         int i = 0;
+        i = g.chooseCommand(player, players.indexOf(player)+1);
 
-        if(isTextGame){
-            i = txt.chooseCommand(player, players.indexOf(player)+1);
-        }
 
         switch (i){
             case(1):
@@ -52,7 +57,7 @@ public class Game {
                 offer(player);
                 break;
             default:
-                printStr("Введена неверная команда");
+                g.printStr("Введена неверная команда");
                 chooseCommand(player);
                 break;
         }
@@ -70,17 +75,25 @@ public class Game {
             }
         } else {
             int[] dice = player.rollDice();
-            if(isTextGame){
-                txt.rollDice(dice[0], dice[1]);
-            }
+            g.rollDice(dice[0], dice[1]);
 
-            player.go(dice);
             Cell currentCell = player.getPlayingField().getCells().get(player.getCurrentPosition());
+            List<Player> p = currentCell.getPlayers();
+            p.remove(player);
+            currentCell.setPlayers(p);
+            player.go(dice);
+
+            currentCell = player.getPlayingField().getCells().get(player.getCurrentPosition());
+            player.setX(currentCell.getX());
+            player.setY(currentCell.getY());
+            p = currentCell.getPlayers();
+            p.add(player);
+            currentCell.setPlayers(p);
             currentCell.makeMove(player, this);
 
             System.out.println();
             if (dice[1] == dice[0]) {
-                printStr("Вам выпал дубль, сделайте ход еще раз");
+                g.printStr("Вам выпал дубль, сделайте ход еще раз");
                 makeMove(player);
             }
         }
@@ -89,76 +102,74 @@ public class Game {
 
     public void buildCompany(Player player){
         if(player.getCompaniesToBuild().size() == 0){
-            printStr("У вас нет компаний, в которых вы можете построить филиалы");
+            g.printStr("У вас нет компаний, в которых вы можете построить филиалы");
         } else {
-            printStr("Стоимость постройки филиала 1500");
+            g.printStr("Стоимость постройки филиала 1500");
             if(player.getCash() >= 1500) {
                 int command = 0;
-                if(isTextGame) {
-                    command = txt.chooseCompanyToBuild(player);
-                }
+                command = g.chooseCompanyToBuild(player);
                 while (command < 1 || command > player.getCompaniesToBuild().size()) {
-                    printStr("Введенная команда неверная попробуйте заново");
-                    command = txt.chooseCompanyToBuild(player);;
+                    g.printStr("Введенная команда неверная попробуйте заново");
+                    command = g.chooseCompanyToBuild(player);;
                 }
                 player.build(player.getCompaniesToBuild().get(command - 1));
-                printStr("Теперь стоимость посещения данной компании: " + player.getCompaniesToBuild().get(command - 1).getSupplyPrice());
+                g.printStr("Теперь стоимость посещения данной компании: " + player.getCompaniesToBuild().get(command - 1).getSupplyPrice());
             } else{
-                printStr("У вас недостаточно средств");
+                g.printStr("У вас недостаточно средств");
             }
         }
         chooseCommand(player);
     }
 
     public void offer(Player player){
-        int command = txt.choosePlayerToOffer(players, player);
+        int command = g.choosePlayerToOffer(players, player);
         while(command < 1 || command > players.size()){
-            printStr("Введенная команда неверная попробуйте заново");
-            command = txt.choosePlayerToOffer(players, player);
+            g.printStr("Введенная команда неверная попробуйте заново");
+            command = g.choosePlayerToOffer(players, player);
         }
         Player offerPlayer = players.get(command-1);
 
-        printStr("Введите сумму, которую хотите предложить от 0 до " + player.getCash());
-        int sum1 = txt.chooseSum(player);
+        g.printStr("Введите сумму, которую хотите предложить от 0 до " + player.getCash());
+        int sum1 = g.chooseSum(player);
         while(sum1 > player.getCash()){
-            printStr("Вы не располагаете таким бюджетом, попробуйте еще раз");
-            sum1 = txt.chooseSum(player);
+            g.printStr("Вы не располагаете таким бюджетом, попробуйте еще раз");
+            sum1 = g.chooseSum(player);
         }
         int[] comp1 = offerDeal(player);
 
 
-        printStr("Введите сумму, которую хотите получить от 0 до " + offerPlayer.getCash());
-        int sum2 = txt.chooseSum(offerPlayer);
+        g.printStr("Введите сумму, которую хотите получить от 0 до " + offerPlayer.getCash());
+        int sum2 = g.chooseSum(offerPlayer);
         while(sum2 > offerPlayer.getCash()){
-            printStr("Данный игрок не располагает таким бюджетом, попробуйте еще раз");
-            sum2 = txt.chooseSum(offerPlayer);
+            g.printStr("Данный игрок не располагает таким бюджетом, попробуйте еще раз");
+            sum2 = g.chooseSum(offerPlayer);
         }
         int[] comp2 = chooseWhatToGet(offerPlayer);
 
         System.out.println();
-        printStr("Игрок" + command + ":");
+        g.printStr("Игрок" + command + ":");
         if(!acceptTheDeal(player, offerPlayer, sum1 ,comp1, sum2, comp2)){
-            printStr("Пользователь не согласился на сделку");
+            g.printStr("Пользователь не согласился на сделку");
         }else{
             exchange(player, offerPlayer, sum1, sum2, comp1, comp2);
-            printStr("Сделка успешно осуществлена");
+            g.printStr("Сделка успешно осуществлена");
         }
 
         chooseCommand(player);
     }
 
     public int[] offerDeal(Player player){
-        printStr("Выберете компании для сделки: ");
-        int[] command = txt.chooseCompanyToExchange(player);
+        g.printStr("Выберете компании для сделки: ");
+        int[] command = g.chooseCompanyToExchange(player);
         return command;
     }
 
     public int[] chooseWhatToGet(Player player){
-        return txt.chooseWhatToGet(player);
+        return g.chooseWhatToGet(player);
     }
 
     public boolean acceptTheDeal(Player player1, Player player2, int sum1, int[] comp1, int sum2, int[] comp2){
-        return txt.acceptTheDeal(player1, player2, sum1, comp1, sum2, comp2);
+        return g.acceptTheDeal(player1, player2, sum1, comp1, sum2, comp2);
     }
 
     public void exchange(Player player1, Player player2, int sum1, int sum2, int[] comp1, int[] comp2){
@@ -190,25 +201,27 @@ public class Game {
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             if(player.getCash() < 0){
-                printStr("Игра закончена!");
-                printStr("Проиграл Игрок" + (i+1));
+                g.printStr("Игра закончена!");
+                g.printStr("Проиграл Игрок" + (i+1));
                 return true;
             }
         }
         return false;
     }
 
-    public void printStr(String str){
-        if(isTextGame){
-            txt.displayTheInscription(str);
-        }
+    public GameInterface getG() {
+        return g;
     }
 
-    public TextGame getTxt() {
-        return txt;
+    public void setG(GameInterface g) {
+        this.g = g;
     }
 
-    public boolean isTextGame() {
-        return isTextGame;
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public PlayingField getField() {
+        return field;
     }
 }
