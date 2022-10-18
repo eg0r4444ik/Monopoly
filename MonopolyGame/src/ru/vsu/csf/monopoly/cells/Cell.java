@@ -6,6 +6,7 @@ import ru.vsu.csf.monopoly.graphics.DrawUtils;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cell {
@@ -13,10 +14,10 @@ public class Cell {
     private int x, y, sizeX, sizeY;
     private Color color;
     private String inscription;
-    private List<Player> players;
+    private ArrayList<Player> players;
 
 
-    public Cell(int x, int y, int sizeX, int sizeY, Color color, String inscription, List<Player> players) {
+    public Cell(int x, int y, int sizeX, int sizeY, Color color, String inscription, ArrayList<Player> players) {
         this.x = x;
         this.y = y;
         this.sizeX = sizeX;
@@ -69,11 +70,11 @@ public class Cell {
         this.color = color;
     }
 
-    public List<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 }

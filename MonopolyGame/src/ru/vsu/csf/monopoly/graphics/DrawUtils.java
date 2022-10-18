@@ -4,23 +4,24 @@ import ru.vsu.csf.monopoly.cells.Company;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DrawUtils {
 
-//    public static void drawButton(Graphics2D g, int x, int y, int sizeX, int sizeY, Color color, String text){
-//        g.setColor(color);
-//        g.fillOval(x-sizeX/2, y-sizeY/2, sizeY, sizeY);
-//        g.fillOval(x+sizeX/2-sizeY/2, y-sizeY/2, sizeY, sizeY);
-//        g.setColor(Color.BLACK);
-//        g.drawOval(x-sizeX/2, y-sizeY/2, sizeY, sizeY);
-//        g.drawOval(x+sizeX/2-sizeY/2, y-sizeY/2, sizeY, sizeY);
-//        g.setColor(color);
-//        g.fillRect(x-sizeX/2+sizeY/2, y-sizeY/2, sizeX-sizeY/2, sizeY);
-//        g.setColor(Color.BLACK);
-//        drawCenteredString(g, text, new Rectangle(x-sizeX/2+sizeY/2, y-sizeY/2, sizeX-sizeY/2, sizeY), new Font("TimesRoman", Font.PLAIN, sizeX/8));
-//
-//    }
+    public static void drawButton(Graphics2D g, int x, int y, int sizeX, int sizeY, Color color, String text){
+        g.setColor(color);
+        g.fillOval(x-sizeX/2, y-sizeY/2, sizeY, sizeY);
+        g.fillOval(x+sizeX/2-sizeY/2, y-sizeY/2, sizeY, sizeY);
+        g.setColor(Color.BLACK);
+        g.drawOval(x-sizeX/2, y-sizeY/2, sizeY, sizeY);
+        g.drawOval(x+sizeX/2-sizeY/2, y-sizeY/2, sizeY, sizeY);
+        g.setColor(color);
+        g.fillRect(x-sizeX/2+sizeY/2, y-sizeY/2, sizeX-sizeY/2, sizeY);
+        g.setColor(Color.BLACK);
+        drawCenteredString(g, text, new Rectangle(x-sizeX/2+sizeY/2, y-sizeY/2, sizeX-sizeY/2, sizeY), new Font("TimesRoman", Font.PLAIN, sizeX/8));
+
+    }
 
     public static void drawPlayer(Graphics2D g, int x, int y, int size, Color color){
         g.setColor(color);
@@ -29,7 +30,7 @@ public class DrawUtils {
         g.drawOval(x-size/2, y-size/2, size, size);
     }
 
-    public static void drawPlayers(Graphics2D g, int x, int y, int sizeX, int sizeY, List<Player> players){
+    public static void drawPlayers(Graphics2D g, int x, int y, int sizeX, int sizeY, ArrayList<Player> players){
         if(players.size() == 2){
             g.setColor(players.get(0).getColor());
             g.fillOval(x-sizeX*3/8, y-sizeY/8, sizeX/4, sizeX/4);

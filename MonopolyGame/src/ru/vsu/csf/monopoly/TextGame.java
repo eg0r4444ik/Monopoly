@@ -1,6 +1,7 @@
 package ru.vsu.csf.monopoly;
 
 import ru.vsu.csf.monopoly.cells.*;
+import ru.vsu.csf.monopoly.graphics.DrawPanel;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.util.ArrayList;
@@ -158,5 +159,10 @@ public class TextGame implements GameInterface{
 
     public void printStr(String str){
         System.out.println(str);
+    }
+
+    @Override
+    public void setDp(DrawPanel dp) {
+
     }
 }

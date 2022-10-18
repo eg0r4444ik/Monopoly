@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Game {
     private int playersCount;
-    private List<Player> players = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
     private GameInterface g;
     private PlayingField field;
     private List<Color> colors = Arrays.asList(Color.RED, Color.BLUE, Color.ORANGE, Color.GREEN);
@@ -24,14 +24,18 @@ public class Game {
     }
 
     public void start(){
-        MainWindow mw = new MainWindow(this);
+        MainWindow mw = new MainWindow(this, g);
         mw.setVisible(true);
         for(int i = 0; i < playersCount; i++){
             Player player = new Player(260, 35, 24, colors.get(i), 0, 15000, field, new ArrayList<>(), 0);
             players.add(player);
         }
         Cell start = field.getCells().get(0);
-        start.setPlayers(players);
+        ArrayList<Player> p = new ArrayList<>();
+        for(Player pl : players){
+            p.add(pl);
+        }
+        start.setPlayers(p);
         while(!gameOver()){
             for(int i = 0; i < playersCount; i++){
                 Player player = players.get(i);
@@ -78,8 +82,8 @@ public class Game {
             g.rollDice(dice[0], dice[1]);
 
             Cell currentCell = player.getPlayingField().getCells().get(player.getCurrentPosition());
-            List<Player> p = currentCell.getPlayers();
-            p.remove(player);
+            ArrayList<Player> p = currentCell.getPlayers();
+            p.remove(0);
             currentCell.setPlayers(p);
             player.go(dice);
 

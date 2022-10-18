@@ -3,6 +3,7 @@ package ru.vsu.csf.monopoly;
 import ru.vsu.csf.monopoly.cells.Casino;
 import ru.vsu.csf.monopoly.cells.Company;
 import ru.vsu.csf.monopoly.cells.Rialto;
+import ru.vsu.csf.monopoly.graphics.DrawPanel;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.util.List;
@@ -22,4 +23,5 @@ public interface GameInterface {
     void rollOneDice(int dice);
     int[] scanThreeNum();
     void printStr(String str);
+    public void setDp(DrawPanel dp);
 }

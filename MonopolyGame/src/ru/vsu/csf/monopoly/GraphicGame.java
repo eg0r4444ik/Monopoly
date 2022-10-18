@@ -14,67 +14,78 @@ public class GraphicGame implements GameInterface{
 
     private DrawPanel dp;
 
-    public GraphicGame() {
-
-    }
-
+    @Override
     public int chooseCommand(Player player, int index) {
-        return 3;
+        return dp.chooseCommand(player);
     }
 
+    @Override
     public int chooseCompanyCommand(Company company) {
         return 1;
     }
 
+    @Override
     public int chooseCasinoCommand(Casino casino) {
         return 0;
     }
 
+    @Override
     public int chooseRialtoCommand(Rialto rialto) {
         return 0;
     }
 
+    @Override
     public int chooseCompanyToBuild(Player player) {
         return 0;
     }
 
+    @Override
     public int[] chooseCompanyToExchange(Player player) {
         return new int[0];
     }
 
+    @Override
     public int choosePlayerToOffer(List<Player> players, Player player) {
         return 0;
     }
 
+    @Override
     public int chooseSum(Player player) {
         return 0;
     }
 
+    @Override
     public int[] chooseWhatToGet(Player player) {
         return new int[0];
     }
 
+    @Override
     public boolean acceptTheDeal(Player player1, Player player2, int sum1, int[] comp1, int sum2, int[] comp2) {
         return false;
     }
 
+    @Override
     public void rollDice(int dice1, int dice2) {
-//        ArrayList<Dice> dices = new ArrayList<>();
-//        dices.add(new Dice(50, 60, 30, dice1));
-//        dices.add(new Dice(50, 60, 30, dice2));
-//        dp.setDices(dices);
-        return;
+        dp.rollDice(dice1, dice2);
     }
 
+    @Override
     public void rollOneDice(int dice) {
 
     }
 
+    @Override
     public int[] scanThreeNum() {
         return new int[0];
     }
 
+    @Override
     public void printStr(String str) {
 
+    }
+
+    @Override
+    public void setDp(DrawPanel dp) {
+        this.dp = dp;
     }
 }
