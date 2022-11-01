@@ -9,15 +9,15 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cell {
+public abstract class Cell {
 
     private int x, y, sizeX, sizeY;
     private Color color;
     private String inscription;
-    private ArrayList<Player> players;
+    private List<Player> players;
 
 
-    public Cell(int x, int y, int sizeX, int sizeY, Color color, String inscription, ArrayList<Player> players) {
+    public Cell(int x, int y, int sizeX, int sizeY, Color color, String inscription, List<Player> players) {
         this.x = x;
         this.y = y;
         this.sizeX = sizeX;
@@ -27,9 +27,7 @@ public class Cell {
         this.players = players;
     }
 
-    public void makeMove(Player player, Game game){
-        this.makeMove(player, game);
-    }
+    public abstract void makeMove(Player player, Game game);
 
     public void draw(Graphics2D g){
         if(this instanceof Company){
@@ -45,6 +43,7 @@ public class Cell {
             DrawUtils.drawCell(g, x, y, sizeX, sizeY, color, inscription);
         }
     }
+
     public void drawPlayers(Graphics2D g){
         if(players.size() == 1){
             players.get(0).draw(g);
@@ -70,11 +69,11 @@ public class Cell {
         this.color = color;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 }

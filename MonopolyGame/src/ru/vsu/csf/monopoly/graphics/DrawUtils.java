@@ -30,7 +30,7 @@ public class DrawUtils {
         g.drawOval(x-size/2, y-size/2, size, size);
     }
 
-    public static void drawPlayers(Graphics2D g, int x, int y, int sizeX, int sizeY, ArrayList<Player> players){
+    public static void drawPlayers(Graphics2D g, int x, int y, int sizeX, int sizeY, List<Player> players){
         if(players.size() == 2){
             g.setColor(players.get(0).getColor());
             g.fillOval(x-sizeX*3/8, y-sizeY/8, sizeX/4, sizeX/4);

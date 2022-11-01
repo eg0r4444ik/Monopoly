@@ -1,6 +1,7 @@
 package ru.vsu.csf.monopoly;
 
 import ru.vsu.csf.monopoly.cells.*;
+import ru.vsu.csf.monopoly.graphics.DrawPanel;
 import ru.vsu.csf.monopoly.graphics.MainWindow;
 import ru.vsu.csf.monopoly.player.Player;
 
@@ -14,6 +15,8 @@ public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private GameInterface g;
     private PlayingField field;
+    private DrawPanel dp;
+    private MainWindow mw;
     private List<Color> colors = Arrays.asList(Color.RED, Color.BLUE, Color.ORANGE, Color.GREEN);
 
 
@@ -24,8 +27,11 @@ public class Game {
     }
 
     public void start(){
-        MainWindow mw = new MainWindow(this, g);
-        mw.setVisible(true);
+        if(g instanceof GraphicGame) {
+            mw = new MainWindow(this, g);
+            dp = mw.getDp();
+            mw.setVisible(true);
+        }
         for(int i = 0; i < playersCount; i++){
             Player player = new Player(260, 35, 24, colors.get(i), 0, 15000, field, new ArrayList<>(), 0);
             players.add(player);
@@ -82,7 +88,7 @@ public class Game {
             g.rollDice(dice[0], dice[1]);
 
             Cell currentCell = player.getPlayingField().getCells().get(player.getCurrentPosition());
-            ArrayList<Player> p = currentCell.getPlayers();
+            List<Player> p = currentCell.getPlayers();
             p.remove(0);
             currentCell.setPlayers(p);
             player.go(dice);

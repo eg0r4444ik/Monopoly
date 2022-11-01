@@ -4,6 +4,7 @@ import ru.vsu.csf.monopoly.Dice;
 import ru.vsu.csf.monopoly.Game;
 import ru.vsu.csf.monopoly.PlayingField;
 import ru.vsu.csf.monopoly.cells.Cell;
+import ru.vsu.csf.monopoly.cells.Company;
 import ru.vsu.csf.monopoly.player.Player;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class DrawPanel extends JPanel {
     private Random random = new Random();
     private int currentCommand = 0;
     private Game game;
-    private Button rollDice, buildCompany, offerExchange;
+    private Button rollDice, buildCompany, offerExchange, buyCompany, refuseToBuy;
     private List<Button> buttons;
     private ArrayList<Dice> dices;
     private Timer t;
@@ -34,11 +35,13 @@ public class DrawPanel extends JPanel {
         rollDice = new Button(800, 150, 300, 70, Color.GREEN, "Бросать кубики");
         buildCompany = new Button(800, 250, 300, 70, Color.ORANGE, "Построить филиал");
         offerExchange = new Button(800, 350, 300, 70, Color.PINK, "Предложить обмен");
+        buyCompany = new Button(600, 150, 300, 70, Color.GREEN, "Купить компанию");
+        refuseToBuy = new Button(1000, 150, 300, 70, new Color(248, 46, 46), "Отказаться");
 
         t = new Timer(100, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //dices.clear();
+                dices.clear();
                 dices.add(new Dice(800, 400, 70, random.nextInt(5)+1));
                 dices.add(new Dice(1000, 400, 70, random.nextInt(5)+1));
                 repaint();
@@ -59,7 +62,7 @@ public class DrawPanel extends JPanel {
                     buttons.remove(rollDice);
                     buttons.remove(buildCompany);
                     buttons.remove(offerExchange);
-                    //t.start();
+                    t.start();
                 }
                 if (e.getX() < buildCompany.getX() + buildCompany.getSizeX() / 2 && e.getX() > buildCompany.getX() - buildCompany.getSizeX() / 2 && e.getY() < buildCompany.getY() + buildCompany.getSizeY() / 2 && e.getY() > buildCompany.getY() - buildCompany.getSizeY() / 2) {
                     currentCommand = 2;
@@ -73,6 +76,7 @@ public class DrawPanel extends JPanel {
                     buttons.remove(buildCompany);
                     buttons.remove(offerExchange);
                 }
+                revalidate();
                 repaint();
             }
         });
@@ -83,10 +87,43 @@ public class DrawPanel extends JPanel {
     }
 
     public void rollDice(int dice1, int dice2){
-//        this.dices.add(new Dice(400, 400, 70, dice1));
-//        this.dices.add(new Dice(600, 400, 70, dice2));
-//        repaint();
-        t.start();
+        Timer t1 = new Timer(100, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                t.stop();
+                dices.clear();
+                dices.add(new Dice(400, 400, 70, dice1));
+                dices.add(new Dice(600, 400, 70, dice2));
+                revalidate();
+                repaint();
+            }
+        });
+        t1.start();
+    }
+
+    public int chooseCompanyCommand(Company company) {
+        buttons.add(buyCompany);
+        buttons.add(refuseToBuy);
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getX() < buyCompany.getX() + buyCompany.getSizeX() / 2 && e.getX() > buyCompany.getX() - buyCompany.getSizeX() / 2 && e.getY() < buyCompany.getY() + buyCompany.getSizeY() / 2 && e.getY() > buyCompany.getY() - buyCompany.getSizeY() / 2) {
+                    currentCommand = 1;
+                    buttons.remove(buyCompany);
+                    buttons.remove(refuseToBuy);
+                }
+                if (e.getX() < refuseToBuy.getX() + refuseToBuy.getSizeX() / 2 && e.getX() > refuseToBuy.getX() - refuseToBuy.getSizeX() / 2 && e.getY() < refuseToBuy.getY() + refuseToBuy.getSizeY() / 2 && e.getY() > refuseToBuy.getY() - refuseToBuy.getSizeY() / 2) {
+                    currentCommand = 2;
+                    buttons.remove(buyCompany);
+                    buttons.remove(refuseToBuy);
+                }
+                repaint();
+            }
+        });
+        while(currentCommand == 0){}
+        int c = currentCommand;
+        currentCommand = 0;
+        return c;
     }
 
     @Override
@@ -117,5 +154,11 @@ public class DrawPanel extends JPanel {
 
     public int getCurrentCommand() {
         return currentCommand;
+    }
+
+    public void update() {
+        this.removeAll();
+        this.repaint();
+        this.revalidate();
     }
 }

@@ -7,6 +7,7 @@ import ru.vsu.csf.monopoly.graphics.DrawPanel;
 import ru.vsu.csf.monopoly.graphics.MainWindow;
 import ru.vsu.csf.monopoly.player.Player;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class GraphicGame implements GameInterface{
 
     @Override
     public int chooseCompanyCommand(Company company) {
-        return 1;
+        return dp.chooseCompanyCommand(company);
     }
 
     @Override
