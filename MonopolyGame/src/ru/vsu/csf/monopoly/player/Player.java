@@ -1,6 +1,6 @@
 package ru.vsu.csf.monopoly.player;
 
-import ru.vsu.csf.monopoly.PlayingField;
+import ru.vsu.csf.monopoly.game.PlayingField;
 import ru.vsu.csf.monopoly.cells.Cell;
 import ru.vsu.csf.monopoly.cells.Company;
 import ru.vsu.csf.monopoly.graphics.DrawUtils;
@@ -16,7 +16,7 @@ public class Player {
     private int currentPosition;
     private int cash;
     private int x, y, size;
-    private Color color;
+    private final Color color;
     private PlayingField playingField;
     private List<Company> myCompanies;
     private int countOfDouble, countOfThrowsInPrison = 0;
@@ -133,8 +133,12 @@ public class Player {
         return comp;
     }
 
-    public void draw(Graphics2D g){
-        DrawUtils.drawPlayer(g, x, y, size, color);
+    public void draw(Graphics2D g, int number){
+        DrawUtils.drawPlayer(g, x, y, size, color, number, cash);
+    }
+
+    public void drawActive(Graphics2D g, int number){
+        DrawUtils.drawActivePlayer(g, x, y, size, color, number, cash);
     }
 
     public boolean build(Company company){
@@ -215,5 +219,9 @@ public class Player {
 
     public Color getColor() {
         return color;
+    }
+
+    public int getSize() {
+        return size;
     }
 }

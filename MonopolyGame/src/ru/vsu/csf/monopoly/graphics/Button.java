@@ -1,8 +1,9 @@
 package ru.vsu.csf.monopoly.graphics;
 
+import javax.swing.*;
 import java.awt.*;
 
-public class Button {
+public class Button extends JButton {
     private int x, y, sizeX, sizeY;
     private Color color;
     private String text;

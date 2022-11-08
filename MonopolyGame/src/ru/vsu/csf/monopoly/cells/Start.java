@@ -1,11 +1,11 @@
 package ru.vsu.csf.monopoly.cells;
 
-import ru.vsu.csf.monopoly.Game;
+import ru.vsu.csf.monopoly.game.Game;
+import ru.vsu.csf.monopoly.game.GraphicGame;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Start extends Cell implements CellActions{
 
@@ -14,8 +14,9 @@ public class Start extends Cell implements CellActions{
     }
 
     public void makeMove(Player player, Game game){
-        game.getG().printStr("Вы получаете 2000 за прохождение круга");
+        //game.getG().printStr("Вы получаете 2000 за прохождение круга");
         player.setCash(player.getCash() + 2000);
-        game.getG().printStr("Ваш бюджет: " + player.getCash());
+        //game.getG().printStr("Ваш бюджет: " + player.getCash());
+        game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы получаете 2000 за прохождение круга");
     }
 }

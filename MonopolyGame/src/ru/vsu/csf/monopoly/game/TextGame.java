@@ -1,14 +1,12 @@
-package ru.vsu.csf.monopoly;
+package ru.vsu.csf.monopoly.game;
 
 import ru.vsu.csf.monopoly.cells.*;
-import ru.vsu.csf.monopoly.graphics.DrawPanel;
 import ru.vsu.csf.monopoly.player.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class TextGame implements GameInterface{
+public class TextGame {
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -161,8 +159,4 @@ public class TextGame implements GameInterface{
         System.out.println(str);
     }
 
-    @Override
-    public void setDp(DrawPanel dp) {
-
-    }
 }

@@ -23,14 +23,32 @@ public class DrawUtils {
 
     }
 
-    public static void drawPlayer(Graphics2D g, int x, int y, int size, Color color){
-        g.setColor(color);
-        g.fillOval(x-size/2, y-size/2, size, size);
+    public static void drawPlayer(Graphics2D g, int x, int y, int size, Color color, int playerNumber, int cash){
+        g.setColor(new Color(94, 89, 89));
+        g.fillRect(x, y, size, size);
         g.setColor(Color.BLACK);
-        g.drawOval(x-size/2, y-size/2, size, size);
+        g.drawRect(x, y, size, size);
+        drawCenteredString(g, "Игрок " + playerNumber, new Rectangle(x, y, size, size/2), new Font("TimesRoman", Font.PLAIN, size/8));
+        drawCenteredString(g, "Ваш бюджет: " + cash, new Rectangle(x, y + size/2, size, size/2), new Font("TimesRoman", Font.PLAIN, size/10));
+    }
+
+    public static void drawActivePlayer(Graphics2D g, int x, int y, int size, Color color, int playerNumber, int cash){
+        g.setColor(color);
+        g.fillRect(x, y, size, size);
+        g.setColor(Color.BLACK);
+        g.drawRect(x,y, size, size);
+        drawCenteredString(g, "Игрок " + playerNumber, new Rectangle(x, y, size, size/2), new Font("TimesRoman", Font.PLAIN, size/8));
+        drawCenteredString(g, "Ваш бюджет: " + cash, new Rectangle(x, y + size/2, size, size/2), new Font("TimesRoman", Font.PLAIN, size/10));
     }
 
     public static void drawPlayers(Graphics2D g, int x, int y, int sizeX, int sizeY, List<Player> players){
+        if(players.size() == 1){
+            g.setColor(players.get(0).getColor());
+            int size = sizeX/4;
+            g.fillOval(x-size/2, y-size/2, size, size);
+            g.setColor(Color.BLACK);
+            g.drawOval(x-size/2, y-size/2, size, size);
+        }
         if(players.size() == 2){
             g.setColor(players.get(0).getColor());
             g.fillOval(x-sizeX*3/8, y-sizeY/8, sizeX/4, sizeX/4);
@@ -119,12 +137,17 @@ public class DrawUtils {
         drawCenteredString(g, "$" + price, new Rectangle(x-sizeX/2, y+sizeY/4, sizeX, sizeY/4), new Font("TimesRoman", Font.PLAIN, sizeX/8));
     }
 
-    private static void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
+    public static void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
         FontMetrics metrics = g.getFontMetrics(font);
         int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
         int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
         g.setFont(font);
         g.drawString(text, x, y);
+    }
+
+    public static void drawStr(Graphics2D g, String text){
+        g.setColor(Color.WHITE);
+        drawCenteredString(g, text, new Rectangle(320, 72, 1020, 595), new Font("TimesRoman", Font.PLAIN, 30));
     }
 
     public static void drawDice(Graphics2D g, int x, int y, int value, int size){

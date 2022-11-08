@@ -1,4 +1,4 @@
-package ru.vsu.csf.monopoly;
+package ru.vsu.csf.monopoly.game;
 
 import ru.vsu.csf.monopoly.cells.*;
 

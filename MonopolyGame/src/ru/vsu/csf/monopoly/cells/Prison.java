@@ -1,14 +1,13 @@
 package ru.vsu.csf.monopoly.cells;
 
-import ru.vsu.csf.monopoly.Game;
+import ru.vsu.csf.monopoly.game.Game;
 
+import ru.vsu.csf.monopoly.game.GraphicGame;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
 
 public class Prison extends Cell implements CellActions{
 
@@ -17,8 +16,20 @@ public class Prison extends Cell implements CellActions{
     }
 
     public void makeMove(Player player, Game game){
-        game.getG().printStr("Вы отправляетесь в тюрьму");
+        //game.getG().printStr("Вы отправляетесь в тюрьму");
+        Cell currentCell = player.getPlayingField().getCells().get(player.getCurrentPosition());
+        List<Player> p = currentCell.getPlayers();
+        p.remove(player);
+        currentCell.setPlayers(p);
+
         player.setCurrentPosition(10);
         player.setPrisonForVisit(false);
+
+        currentCell = player.getPlayingField().getCells().get(10);
+        p = currentCell.getPlayers();
+        p.add(player);
+        currentCell.setPlayers(p);
+
+        game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы отправляетесь в тюрьму");
     }
 }

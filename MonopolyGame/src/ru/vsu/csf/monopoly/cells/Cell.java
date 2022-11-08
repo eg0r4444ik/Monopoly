@@ -1,15 +1,14 @@
 package ru.vsu.csf.monopoly.cells;
 
-import ru.vsu.csf.monopoly.Game;
-import ru.vsu.csf.monopoly.graphics.DrawPanel;
+import ru.vsu.csf.monopoly.game.Game;
 import ru.vsu.csf.monopoly.graphics.DrawUtils;
 import ru.vsu.csf.monopoly.player.Player;
 
+import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Cell {
+public abstract class Cell extends JPanel {
 
     private int x, y, sizeX, sizeY;
     private Color color;
@@ -45,10 +44,7 @@ public abstract class Cell {
     }
 
     public void drawPlayers(Graphics2D g){
-        if(players.size() == 1){
-            players.get(0).draw(g);
-        }
-        if(players.size() > 1){
+        if(players.size() > 0){
             DrawUtils.drawPlayers(g, x, y, sizeX, sizeY, players);
         }
     }
