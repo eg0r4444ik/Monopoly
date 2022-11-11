@@ -2,6 +2,7 @@ package ru.vsu.csf.monopoly.game;
 
 import ru.vsu.csf.monopoly.cells.Casino;
 import ru.vsu.csf.monopoly.cells.Cell;
+import ru.vsu.csf.monopoly.cells.Company;
 import ru.vsu.csf.monopoly.cells.Rialto;
 import ru.vsu.csf.monopoly.graphics.Button;
 import ru.vsu.csf.monopoly.graphics.Dice;
@@ -35,15 +36,16 @@ public class GraphicGame extends JPanel implements Runnable {
     private List<Dice> dices;
     private int[] dice;
     private List<Player> players;
-    private int playersCount;
-    private int currentPlayerIndex = 0;
+    private int playersCount, currentPlayerIndex = 0;
+    private boolean canBuildCompany = true;
     Steps step = Steps.CHOOSE_COMMAND;
     private PlayingField field;
     private Random random = new Random();
-    private Button rollDice, buildCompany, offerExchange, buyCompany, refuseToBuy, okButton, playInCasino, refuseToPlay;
-    private Button firstCasinoChoice, secondCasinoChoice, payForExit, waitForExit, onlyPayForExit;
+    private final Button rollDice, buildCompany, refuseToBuild, buyCompany, refuseToBuy, okButton, playInCasino, refuseToPlay;
+    private final Button firstCasinoChoice, secondCasinoChoice, payForExit, waitForExit, onlyPayForExit;
     private Player currentPlayer;
     private String currentString;
+    private Company currentCompany;
 
     @Override
     public void render(int[] dices, Steps step, PlayingField field, String str) {
@@ -64,6 +66,7 @@ public class GraphicGame extends JPanel implements Runnable {
         field.generateField();
         players = new ArrayList<>();
         currentString = "";
+        currentCompany = null;
         dice = new int[2];
         int s = 0;
         for (int i = 0; i < playersCount; i++) {
@@ -84,8 +87,8 @@ public class GraphicGame extends JPanel implements Runnable {
         dices = new ArrayList<>();
         buttons = new ArrayList<>();
         rollDice = new Button(800, 150, 300, 70, Color.GREEN, "Сделать ход");
-        buildCompany = new Button(800, 250, 300, 70, Color.ORANGE, "Построить филиал");
-        offerExchange = new Button(800, 350, 300, 70, Color.PINK, "Предложить обмен");
+        buildCompany = new Button(800, 150, 300, 70, Color.ORANGE, "Построить филиал");
+        refuseToBuild = new Button(800, 250, 300, 70, Color.PINK, "Отказаться");
         buyCompany = new Button(600, 150, 300, 70, Color.GREEN, "Купить компанию");
         refuseToBuy = new Button(1000, 150, 300, 70, new Color(248, 46, 46), "Отказаться");
         playInCasino = new Button(600, 150, 300, 70, Color.GREEN, "Сыграть в казино");
@@ -100,8 +103,6 @@ public class GraphicGame extends JPanel implements Runnable {
         okButton = new Button(825, 500, 200, 50, Color.GREEN, "OK");
 
         buttons.add(rollDice);
-        buttons.add(buildCompany);
-        buttons.add(offerExchange);
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -110,11 +111,25 @@ public class GraphicGame extends JPanel implements Runnable {
                     buttons.clear();
                     repaint();
                     game.makeMove(currentPlayer);
-                } else if (isButtonClicked(e, buildCompany)) {
-                    buttons.clear();
+                } else if(isCompanyClicked(e) && canBuildCompany){
+                    Company company = whatCompanyClicked(e);
+                    if(currentPlayer.getMyCompanies().contains(company) && company.getCountOfBuildings() <= 2){
+                        currentCompany = company;
+                        buttons.clear();
+                        buttons.add(buildCompany);
+                        buttons.add(refuseToBuild);
+                    }
                     repaint();
-                } else if (isButtonClicked(e, offerExchange)) {
+                } else if (isButtonClicked(e, buildCompany)) {
+                    game.buildCompany(currentPlayer, currentCompany);
+                    canBuildCompany = false;
+                    currentCompany = null;
                     buttons.clear();
+                    render(null, Steps.CHOOSE_COMMAND, field, "");
+                    repaint();
+                } else if (isButtonClicked(e, refuseToBuild)) {
+                    buttons.clear();
+                    render(null, Steps.CHOOSE_COMMAND, field, "");
                     repaint();
                 } else if (isButtonClicked(e, buyCompany)) {
                     currentPlayer.buyCompany();
@@ -122,6 +137,7 @@ public class GraphicGame extends JPanel implements Runnable {
                     buttons.clear();
                     repaint();
                     if (dice[0] != dice[1]) {
+                        canBuildCompany = true;
                         currentPlayerIndex++;
                     }
                     currentPlayer = players.get(currentPlayerIndex % players.size());
@@ -130,7 +146,8 @@ public class GraphicGame extends JPanel implements Runnable {
                     buttons.clear();
                     dices.clear();
                     repaint();
-                    if (dice[0] != dice[1]) {
+                    if (dice[0] != dice[1]){
+                        canBuildCompany = true;
                         currentPlayerIndex++;
                     }
                     currentPlayer = players.get(currentPlayerIndex % players.size());
@@ -141,6 +158,7 @@ public class GraphicGame extends JPanel implements Runnable {
                     currentString = "";
                     repaint();
                     if (dice[0] != dice[1]) {
+                        canBuildCompany = true;
                         currentPlayerIndex++;
                     }
                     currentPlayer = players.get(currentPlayerIndex % players.size());
@@ -154,7 +172,8 @@ public class GraphicGame extends JPanel implements Runnable {
                     buttons.clear();
                     dices.clear();
                     repaint();
-                    if (dice[0] != dice[1] && !(currentPlayer.isPrisonForVisit())) {
+                    if (dice[0] != dice[1]) {
+                        canBuildCompany = true;
                         currentPlayerIndex++;
                     }
                     currentPlayer = players.get(currentPlayerIndex % players.size());
@@ -231,8 +250,6 @@ public class GraphicGame extends JPanel implements Runnable {
 
     private void chooseCommand(Player player) {
         buttons.add(rollDice);
-        buttons.add(buildCompany);
-        buttons.add(offerExchange);
         repaint();
     }
 
@@ -285,6 +302,24 @@ public class GraphicGame extends JPanel implements Runnable {
         return false;
     }
 
+    private boolean isCompanyClicked(MouseEvent e){
+        for(Cell cell : field.getCells()){
+            if(cell instanceof Company && e.getX() < cell.getX() + cell.getSizeX() / 2 && e.getX() > cell.getX() - cell.getSizeX() / 2 && e.getY() < cell.getY() + cell.getSizeY() / 2 && e.getY() > cell.getY() - cell.getSizeY() / 2){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Company whatCompanyClicked(MouseEvent e){
+        for(Cell cell : field.getCells()){
+            if(cell instanceof Company && e.getX() < cell.getX() + cell.getSizeX() / 2 && e.getX() > cell.getX() - cell.getSizeX() / 2 && e.getY() < cell.getY() + cell.getSizeY() / 2 && e.getY() > cell.getY() - cell.getSizeY() / 2){
+                return (Company)cell;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -322,14 +357,24 @@ public class GraphicGame extends JPanel implements Runnable {
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             if(player.getCash() < 0){
-                buttons.clear();
-                dices.clear();
-                game.getField().setCells(new ArrayList<>());
-                players = new ArrayList<>();
-                g2d.setColor(Color.RED);
+                for(Company company : player.getMyCompanies()){
+                    company.setBought(false);
+                    if(company.getCountOfBuildings() != 0) {
+                        company.setSupplyPrice(company.getSupplyPrice() / (4 * company.getCountOfBuildings()));
+                        company.setCountOfBuildings(0);
+                    }
+                    company.setColor(Color.WHITE);
+                }
+                players.remove(i);
+            }
+            if(players.size() == 1){
+                g2d.setColor(new Color(51, 49, 49));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
-                g2d.setColor(Color.BLACK);
-                DrawUtils.drawCenteredString(g, "Игра оконена, проиграл игрок " + (i+1), new Rectangle(0, 0, getWidth(), getHeight()), new Font("TimesRoman", Font.PLAIN, getHeight()/8));
+                players.get(0).setColor(new Color(189, 171, 61, 240));
+                players.get(0).drawActive(g2d, 1);
+                buttons.clear();
+                g2d.setColor(Color.WHITE);
+                DrawUtils.drawCenteredString(g, "Победа!", new Rectangle(0, 0, getWidth(), getHeight()), new Font("TimesRoman", Font.PLAIN, getHeight()/8));
             }
         }
     }

@@ -48,29 +48,25 @@ public class Game {
             p.add(player);
             currentCell.setPlayers(p);
             currentCell.makeMove(player, this);
-
-//            if (dice[1] == dice[0]) {
-//                //g.printStr("Вам выпал дубль, сделайте ход еще раз");
-//                makeMove(player);
-//            }
         }
     }
 
 
-    public void buildCompany(Player player){
+    public void buildCompany(Player player, Company company){
         if(player.getCompaniesToBuild().size() == 0){
+            runnable.render(null, GraphicGame.Steps.DRAW_STRING, field, "У вас недостаточно компаний, чтобы построить филиал");
             //g.printStr("У вас нет компаний, в которых вы можете построить филиалы");
         } else {
             //g.printStr("Стоимость постройки филиала 1500");
             if(player.getCash() >= 1500) {
-                runnable.render(null, GraphicGame.Steps.CHOOSE_COMPANY_COMMAND, field, null);
 //                while (command < 1 || command > player.getCompaniesToBuild().size()) {
 //                    g.printStr("Введенная команда неверная попробуйте заново");
 //                    command = g.chooseCompanyToBuild(player);;
 //                }
-                //player.build(player.getCompaniesToBuild().get(command - 1));
+                player.build(company);
                 //g.printStr("Теперь стоимость посещения данной компании: " + player.getCompaniesToBuild().get(command - 1).getSupplyPrice());
             } else{
+                runnable.render(null, GraphicGame.Steps.DRAW_STRING, field, "У вас недостаточно средств для постройки");
                 //g.printStr("У вас недостаточно средств");
             }
         }

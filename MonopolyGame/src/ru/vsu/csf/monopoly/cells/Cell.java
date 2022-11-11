@@ -37,7 +37,7 @@ public abstract class Cell extends JPanel {
             } else{
                 price = c.getPurchasePrice();
             }
-            DrawUtils.drawCell(g, x, y, sizeX, sizeY, color, inscription, price, c.getCompanyType());
+            DrawUtils.drawCell(g, x, y, sizeX, sizeY, color, inscription, price, c.getCompanyType(), c.getCountOfBuildings());
         } else{
             DrawUtils.drawCell(g, x, y, sizeX, sizeY, color, inscription);
         }
@@ -71,5 +71,13 @@ public abstract class Cell extends JPanel {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeY() {
+        return sizeY;
     }
 }

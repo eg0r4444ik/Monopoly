@@ -1,5 +1,6 @@
 package ru.vsu.csf.monopoly.player;
 
+import ru.vsu.csf.monopoly.cells.Start;
 import ru.vsu.csf.monopoly.game.PlayingField;
 import ru.vsu.csf.monopoly.cells.Cell;
 import ru.vsu.csf.monopoly.cells.Company;
@@ -16,7 +17,7 @@ public class Player {
     private int currentPosition;
     private int cash;
     private int x, y, size;
-    private final Color color;
+    private Color color;
     private PlayingField playingField;
     private List<Company> myCompanies;
     private int countOfDouble, countOfThrowsInPrison = 0;
@@ -60,11 +61,15 @@ public class Player {
     public void go(int[] dice){
         if(countOfDouble == 3){
             currentPosition = 10;
+            prisonForVisit = false;
             countOfDouble = 0;
         } else {
             int sum = dice[0] + dice[1];
             while (sum != 0) {
                 go();
+                if(playingField.getCells().get(currentPosition) instanceof Start){
+                    cash += 2000;
+                }
                 sum--;
             }
         }
@@ -116,7 +121,7 @@ public class Player {
                 count++;
             }
         }
-        if(count == company.getCountToBuy() && company.getCountOfBuildings() < 5){
+        if(count == company.getCountToBuy() && company.getCountOfBuildings() <= 2){
             return true;
         }else{
             return false;
@@ -134,7 +139,11 @@ public class Player {
     }
 
     public void draw(Graphics2D g, int number){
-        DrawUtils.drawPlayer(g, x, y, size, color, number, cash);
+        if(cash >= 0) {
+            DrawUtils.drawPlayer(g, x, y, size, new Color(94, 89, 89), number, cash);
+        }else{
+            DrawUtils.drawPlayer(g, x, y, size, new Color(51, 49, 49), number, cash);
+        }
     }
 
     public void drawActive(Graphics2D g, int number){
@@ -219,6 +228,10 @@ public class Player {
 
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public int getSize() {

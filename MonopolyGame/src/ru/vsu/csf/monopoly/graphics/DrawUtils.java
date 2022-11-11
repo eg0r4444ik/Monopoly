@@ -19,12 +19,12 @@ public class DrawUtils {
         g.setColor(color);
         g.fillRect(x-sizeX/2+sizeY/2, y-sizeY/2, sizeX-sizeY/2, sizeY);
         g.setColor(Color.BLACK);
-        drawCenteredString(g, text, new Rectangle(x-sizeX/2+sizeY/2, y-sizeY/2, sizeX-sizeY/2, sizeY), new Font("TimesRoman", Font.PLAIN, sizeX/8));
+        drawCenteredString(g, text, new Rectangle(x-sizeX/2, y-sizeY/2, sizeX, sizeY), new Font("TimesRoman", Font.PLAIN, sizeX/10));
 
     }
 
     public static void drawPlayer(Graphics2D g, int x, int y, int size, Color color, int playerNumber, int cash){
-        g.setColor(new Color(94, 89, 89));
+        g.setColor(color);
         g.fillRect(x, y, size, size);
         g.setColor(Color.BLACK);
         g.drawRect(x, y, size, size);
@@ -95,7 +95,7 @@ public class DrawUtils {
         drawCenteredString(g, inscription, new Rectangle(x-sizeX/2, y-sizeY/2, sizeX, sizeY), new Font("TimesRoman", Font.PLAIN, sizeX/8));
     }
 
-    public static void drawCell(Graphics2D g, int x, int y, int sizeX, int sizeY, Color color, String inscription, int price, Company.CompanyType type){
+    public static void drawCell(Graphics2D g, int x, int y, int sizeX, int sizeY, Color color, String inscription, int price, Company.CompanyType type, int countOfBuildings){
         g.setColor(color);
         g.fillRect(x-sizeX/2, y-sizeY/2, sizeX, sizeY*3/4);
         g.setColor(Color.BLACK);
@@ -135,6 +135,7 @@ public class DrawUtils {
         g.setColor(Color.BLACK);
         g.drawRect(x-sizeX/2, y+sizeY/4, sizeX, sizeY/4);
         drawCenteredString(g, "$" + price, new Rectangle(x-sizeX/2, y+sizeY/4, sizeX, sizeY/4), new Font("TimesRoman", Font.PLAIN, sizeX/8));
+        drawCenteredString(g, "(" + countOfBuildings + ")", new Rectangle(x, y-sizeY/2, sizeX/2, sizeY/3), new Font("TimesRoman", Font.PLAIN, sizeX/8));
     }
 
     public static void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {

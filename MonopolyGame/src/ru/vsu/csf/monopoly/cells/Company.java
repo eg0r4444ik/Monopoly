@@ -46,7 +46,7 @@ public class Company extends Cell implements CellActions{
     }
 
     public boolean buildCompany(Player player) {
-        if (player.haveAllCompanies(this)) {
+        if (player.haveAllCompanies(this) && countOfBuildings <= 2) {
             this.countOfBuildings++;
             this.supplyPrice *= 4;
             player.setCash(player.getCash() - 1500);
@@ -63,7 +63,11 @@ public class Company extends Cell implements CellActions{
             game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы попали на компанию " + getName() + ", c вас списалось " + getSupplyPrice() + " за посещение");
             //game.getG().printStr("Ваш текущий баланс: " + player.getCash());
         }else if(!isBought()){
-            game.getRunnable().render(null, GraphicGame.Steps.CHOOSE_COMPANY_COMMAND, game.getField(), null);
+            if(player.getCash() >= this.purchasePrice) {
+                game.getRunnable().render(null, GraphicGame.Steps.CHOOSE_COMPANY_COMMAND, game.getField(), null);
+            } else{
+                game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "У вас недостаточно средств для покупки компании");
+            }
         } else{
             game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы попали на свою компанию");
         }
