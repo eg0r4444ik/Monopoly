@@ -1,9 +1,5 @@
 package ru.vsu.csf.monopoly.game;
 
-import ru.vsu.csf.monopoly.game.Game;
-import ru.vsu.csf.monopoly.game.GameInterface;
-import ru.vsu.csf.monopoly.game.GraphicGame;
-
 import javax.swing.*;
 import java.awt.*;
 

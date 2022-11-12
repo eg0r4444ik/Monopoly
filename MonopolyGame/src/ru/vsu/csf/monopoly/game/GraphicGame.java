@@ -21,15 +21,6 @@ import java.util.Random;
 
 public class GraphicGame extends JPanel implements Runnable {
 
-    public enum Steps {
-        CHOOSE_COMMAND,
-        CHOOSE_COMPANY_COMMAND,
-        DRAW_STRING,
-        DRAW_DICE,
-        CHOOSE_CASINO_COMMAND,
-        CHOOSE_RIALTO_COMMAND
-    }
-
     private Game game;
     private List<Color> colors = Arrays.asList(Color.RED, Color.BLUE, Color.ORANGE, Color.GREEN);
     private List<Button> buttons;
@@ -136,33 +127,18 @@ public class GraphicGame extends JPanel implements Runnable {
                     dices.clear();
                     buttons.clear();
                     repaint();
-                    if (dice[0] != dice[1]) {
-                        canBuildCompany = true;
-                        currentPlayerIndex++;
-                    }
-                    currentPlayer = players.get(currentPlayerIndex % players.size());
-                    chooseCommand(currentPlayer);
+                    next();
                 } else if (isButtonClicked(e, refuseToBuy)) {
                     buttons.clear();
                     dices.clear();
                     repaint();
-                    if (dice[0] != dice[1]){
-                        canBuildCompany = true;
-                        currentPlayerIndex++;
-                    }
-                    currentPlayer = players.get(currentPlayerIndex % players.size());
-                    chooseCommand(currentPlayer);
+                    next();
                 } else if (isButtonClicked(e, okButton)) {
                     buttons.clear();
                     dices.clear();
                     currentString = "";
                     repaint();
-                    if (dice[0] != dice[1]) {
-                        canBuildCompany = true;
-                        currentPlayerIndex++;
-                    }
-                    currentPlayer = players.get(currentPlayerIndex % players.size());
-                    chooseCommand(currentPlayer);
+                    next();
                 } else if (isButtonClicked(e, playInCasino)) {
                     buttons.clear();
                     dices.clear();
@@ -172,12 +148,7 @@ public class GraphicGame extends JPanel implements Runnable {
                     buttons.clear();
                     dices.clear();
                     repaint();
-                    if (dice[0] != dice[1]) {
-                        canBuildCompany = true;
-                        currentPlayerIndex++;
-                    }
-                    currentPlayer = players.get(currentPlayerIndex % players.size());
-                    chooseCommand(currentPlayer);
+                    next();
                 } else if (isButtonClicked(e, firstCasinoChoice)) {
                     dices.clear();
                     buttons.clear();
@@ -294,6 +265,14 @@ public class GraphicGame extends JPanel implements Runnable {
         repaint();
     }
 
+    private void next(){
+        if (dice[0] != dice[1]) {
+            canBuildCompany = true;
+            currentPlayerIndex++;
+        }
+        currentPlayer = players.get(currentPlayerIndex % players.size());
+        chooseCommand(currentPlayer);
+    }
 
     private boolean isButtonClicked(MouseEvent e, Button button) {
         if (buttons.contains(button) && e.getX() < button.getX() + button.getSizeX() / 2 && e.getX() > button.getX() - button.getSizeX() / 2 && e.getY() < button.getY() + button.getSizeY() / 2 && e.getY() > button.getY() - button.getSizeY() / 2) {

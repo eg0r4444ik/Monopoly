@@ -13,7 +13,6 @@ public class Game {
     private int playersCount;
     private List<Player> players;
     private PlayingField field;
-    private Player currentPlayer;
 
 
     public Game(int playersCount, PlayingField field, Runnable runnable, List<Player> players) {
@@ -35,7 +34,7 @@ public class Game {
             }
         } else {
             int[] dice = player.rollDice();
-            runnable.render(dice, GraphicGame.Steps.DRAW_DICE, field, "");
+            runnable.render(dice, Runnable.Steps.DRAW_DICE, field, "");
 
             Cell currentCell = player.getPlayingField().getCells().get(player.getCurrentPosition());
             List<Player> p = currentCell.getPlayers();
@@ -54,23 +53,14 @@ public class Game {
 
     public void buildCompany(Player player, Company company){
         if(player.getCompaniesToBuild().size() == 0){
-            runnable.render(null, GraphicGame.Steps.DRAW_STRING, field, "У вас недостаточно компаний, чтобы построить филиал");
-            //g.printStr("У вас нет компаний, в которых вы можете построить филиалы");
+            runnable.render(null, Runnable.Steps.DRAW_STRING, field, "У вас недостаточно компаний, чтобы построить филиал");
         } else {
-            //g.printStr("Стоимость постройки филиала 1500");
             if(player.getCash() >= 1500) {
-//                while (command < 1 || command > player.getCompaniesToBuild().size()) {
-//                    g.printStr("Введенная команда неверная попробуйте заново");
-//                    command = g.chooseCompanyToBuild(player);;
-//                }
                 player.build(company);
-                //g.printStr("Теперь стоимость посещения данной компании: " + player.getCompaniesToBuild().get(command - 1).getSupplyPrice());
             } else{
-                runnable.render(null, GraphicGame.Steps.DRAW_STRING, field, "У вас недостаточно средств для постройки");
-                //g.printStr("У вас недостаточно средств");
+                runnable.render(null, Runnable.Steps.DRAW_STRING, field, "У вас недостаточно средств для постройки");
             }
         }
-        //chooseCommand(player);
     }
 
 //    public void offer(Player player){
@@ -154,10 +144,6 @@ public class Game {
 
     public PlayingField getField() {
         return field;
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
     }
 
     public Runnable getRunnable() {

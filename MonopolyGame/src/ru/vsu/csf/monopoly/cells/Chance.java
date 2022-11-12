@@ -3,6 +3,7 @@ package ru.vsu.csf.monopoly.cells;
 import ru.vsu.csf.monopoly.game.Game;
 
 import ru.vsu.csf.monopoly.game.GraphicGame;
+import ru.vsu.csf.monopoly.game.Runnable;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.awt.*;
@@ -72,7 +73,7 @@ public class Chance extends Cell implements CellActions{
 //            player.setPrisonForVisit(false);
 //            player.setCurrentPosition(10);
 //        }
-        game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), toString(action, player));
+        game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), toString(action, player));
         this.action = Actions.values()[rnd.nextInt(Actions.values().length)];
     }
 

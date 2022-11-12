@@ -22,7 +22,7 @@ public class Main {
             k = scanner.nextInt();
         }
         if(n == 1){
-            //TextGame txt = new TextGame(k);
+            TextGame txt = new TextGame(k);
         }
         if(n == 2){
             MainWindow mw = new MainWindow(k);

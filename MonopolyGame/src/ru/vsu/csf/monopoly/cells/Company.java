@@ -60,16 +60,16 @@ public class Company extends Cell implements CellActions{
         if (isBought() && !player.getMyCompanies().contains(this)) {
             //game.getG().printStr("С вас списалось " + getSupplyPrice() + " за посещение");
             player.payForVisit();
-            game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы попали на компанию " + getName() + ", c вас списалось " + getSupplyPrice() + " за посещение");
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы попали на компанию " + getName() + ", c вас списалось " + getSupplyPrice() + " за посещение");
             //game.getG().printStr("Ваш текущий баланс: " + player.getCash());
         }else if(!isBought()){
             if(player.getCash() >= this.purchasePrice) {
-                game.getRunnable().render(null, GraphicGame.Steps.CHOOSE_COMPANY_COMMAND, game.getField(), null);
+                game.getRunnable().render(null, Runnable.Steps.CHOOSE_COMPANY_COMMAND, game.getField(), null);
             } else{
-                game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "У вас недостаточно средств для покупки компании");
+                game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "У вас недостаточно средств для покупки компании");
             }
         } else{
-            game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы попали на свою компанию");
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы попали на свою компанию");
         }
 //        else {
 //            //int n = game.getG().chooseCompanyCommand(this);

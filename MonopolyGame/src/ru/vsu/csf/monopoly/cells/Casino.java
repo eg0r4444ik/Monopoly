@@ -2,6 +2,7 @@ package ru.vsu.csf.monopoly.cells;
 
 import ru.vsu.csf.monopoly.game.Game;
 import ru.vsu.csf.monopoly.game.GraphicGame;
+import ru.vsu.csf.monopoly.game.Runnable;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.awt.*;
@@ -21,16 +22,16 @@ public class Casino extends Cell implements CellActions{
         player.setCash(player.getCash() - betSum);
         if(bet%2 == number%2){
             player.setCash(player.getCash() + betSum*2);
-            game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы выиграли");
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы выиграли");
         } else{
-            game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы проиграли");
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы проиграли");
         }
         return number;
     }
 
 
     public void makeMove(Player player, Game game){
-        game.getRunnable().render(null, GraphicGame.Steps.CHOOSE_CASINO_COMMAND, game.getField(), "");
+        game.getRunnable().render(null, Runnable.Steps.CHOOSE_CASINO_COMMAND, game.getField(), "");
 
         //int n = game.getG().chooseCasinoCommand(this);
 //        while (n != 1 && n != 2) {

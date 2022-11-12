@@ -3,6 +3,7 @@ package ru.vsu.csf.monopoly.cells;
 import ru.vsu.csf.monopoly.game.Game;
 
 import ru.vsu.csf.monopoly.game.GraphicGame;
+import ru.vsu.csf.monopoly.game.Runnable;
 import ru.vsu.csf.monopoly.player.Player;
 
 import java.awt.*;
@@ -30,6 +31,6 @@ public class Prison extends Cell implements CellActions{
         p.add(player);
         currentCell.setPlayers(p);
 
-        game.getRunnable().render(null, GraphicGame.Steps.DRAW_STRING, game.getField(), "Вы отправляетесь в тюрьму");
+        game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы отправляетесь в тюрьму");
     }
 }
