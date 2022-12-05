@@ -2,9 +2,9 @@ package ru.vsu.csf.monopoly.cells;
 
 import ru.vsu.csf.monopoly.game.Game;
 
-import ru.vsu.csf.monopoly.game.GraphicGame;
 import ru.vsu.csf.monopoly.game.Runnable;
-import ru.vsu.csf.monopoly.player.Player;
+import ru.vsu.csf.monopoly.graphics.DrawUtils;
+import ru.vsu.csf.monopoly.objects.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -56,35 +56,34 @@ public class Company extends Cell implements CellActions{
     }
 
     public void makeMove(Player player, Game game) {
-        //game.getG().printStr("Вы попали на компанию " + getName());
         if (isBought() && !player.getMyCompanies().contains(this)) {
-            //game.getG().printStr("С вас списалось " + getSupplyPrice() + " за посещение");
+            for(Player player1 : game.getPlayers()){
+                if(player1.getMyCompanies().contains(this)){
+                    player1.setCash(player1.getCash() + getSupplyPrice());
+                }
+            }
             player.payForVisit();
-            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы попали на компанию " + getName() + ", c вас списалось " + getSupplyPrice() + " за посещение");
-            //game.getG().printStr("Ваш текущий баланс: " + player.getCash());
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, "Вы попали на компанию " + getName() + ", c вас списалось " + getSupplyPrice() + " за посещение");
         }else if(!isBought()){
             if(player.getCash() >= this.purchasePrice) {
-                game.getRunnable().render(null, Runnable.Steps.CHOOSE_COMPANY_COMMAND, game.getField(), null);
+                game.getRunnable().render(null, Runnable.Steps.CHOOSE_COMPANY_COMMAND, null);
             } else{
-                game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "У вас недостаточно средств для покупки компании");
+                game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, "У вас недостаточно средств для покупки компании");
             }
         } else{
-            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы попали на свою компанию");
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, "Вы попали на свою компанию");
         }
-//        else {
-//            //int n = game.getG().chooseCompanyCommand(this);
-//            game.getRunnable().render(null, GraphicGame.Steps.CHOOSE_COMPANY_COMMAND, game.getField());
-////            while (n != 1 && n != 2) {
-////                //game.getG().printStr("Введенная вами команда неверная, повторите попытку");
-////                n = game.getG().chooseCompanyCommand(this);
-////            }
-////            if (n == 1 && player.getCash() >= purchasePrice) {
-////                //game.getG().printStr("Ваш бюджет: " + player.getCash());
-////            }
-////            if (n == 1 && player.getCash() < purchasePrice) {
-////                //game.getG().printStr("Вам не хватает средств для покупки");
-////            }
-//        }
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        int price;
+        if(isBought()){
+            price = getSupplyPrice();
+        } else{
+            price = getPurchasePrice();
+        }
+        DrawUtils.drawCell(g, x, y, sizeX, sizeY, color, inscription, price, getCompanyType(), getCountOfBuildings());
     }
 
     public int getSupplyPrice() {

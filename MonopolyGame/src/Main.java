@@ -1,5 +1,5 @@
 import ru.vsu.csf.monopoly.game.TextGame;
-import ru.vsu.csf.monopoly.game.MainWindow;
+import ru.vsu.csf.monopoly.graphics.MainWindow;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package ru.vsu.csf.monopoly.player;
+package ru.vsu.csf.monopoly.objects;
 
 import ru.vsu.csf.monopoly.cells.Start;
 import ru.vsu.csf.monopoly.game.PlayingField;
@@ -15,9 +15,9 @@ public class Player {
     private Random rnd;
     private boolean prisonForVisit = true;
     private int currentPosition;
-    private int cash;
-    private int x, y, size;
-    private Color color;
+    protected int cash;
+    protected int x, y, size;
+    protected Color color;
     private PlayingField playingField;
     private List<Company> myCompanies;
     private int countOfDouble, countOfThrowsInPrison = 0;
@@ -138,17 +138,8 @@ public class Player {
         return comp;
     }
 
-    public void draw(Graphics2D g, int number){
-        if(cash >= 0) {
-            DrawUtils.drawPlayer(g, x, y, size, new Color(94, 89, 89), number, cash);
-        }else{
-            DrawUtils.drawPlayer(g, x, y, size, new Color(51, 49, 49), number, cash);
-        }
-    }
-
-    public void drawActive(Graphics2D g, int number){
-        DrawUtils.drawActivePlayer(g, x, y, size, color, number, cash);
-    }
+    public void drawActive(Graphics2D g, int number){}
+    public void draw(Graphics2D g, int number){}
 
     public boolean build(Company company){
         return company.buildCompany(this);

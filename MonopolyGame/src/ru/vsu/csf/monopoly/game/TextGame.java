@@ -1,8 +1,7 @@
 package ru.vsu.csf.monopoly.game;
 
 import ru.vsu.csf.monopoly.cells.*;
-import ru.vsu.csf.monopoly.graphics.Dice;
-import ru.vsu.csf.monopoly.player.Player;
+import ru.vsu.csf.monopoly.objects.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,8 +14,6 @@ public class TextGame implements Runnable{
     private int playersCount, currentPlayerIndex = 0;
     private boolean canBuildCompany = true;
     private Game game;
-    private PlayingField field;
-    private List<Player> players;
     private Player currentPlayer;
     private Steps step;
     private int[] dice;
@@ -24,8 +21,7 @@ public class TextGame implements Runnable{
     private String currentString;
 
     @Override
-    public void render(int[] dices, GraphicGame.Steps step, PlayingField field, String str) {
-        this.field = field;
+    public void render(int[] dices, GraphicGame.Steps step, String str) {
         if(str != null && str != "") {
             this.currentString = str;
         }
@@ -37,26 +33,10 @@ public class TextGame implements Runnable{
     }
 
     public TextGame(int playersCount) {
-        this.playersCount = playersCount;
+        this.game = new Game(playersCount, this);
         currentString = "";
         dice = new int[2];
-        this.field = new PlayingField();
-        field.generateField();
-        players = new ArrayList<>();
-        int s = 0;
-        for (int i = 0; i < playersCount; i++) {
-            Player player = new Player(0, s, 200, Color.black, 0, 15000, field, new ArrayList<>(), 0);
-            s += 200;
-            players.add(player);
-        }
-        Cell start = field.getCells().get(0);
-        ArrayList<Player> p = new ArrayList<>();
-        for (Player pl : players) {
-            p.add(pl);
-        }
-        start.setPlayers(p);
-        currentPlayer = players.get(currentPlayerIndex);
-        this.game = new Game(playersCount, field, this, players);
+        currentPlayer = game.getPlayers().get(currentPlayerIndex);
         chooseCommand(currentPlayer);
     }
 
@@ -77,7 +57,7 @@ public class TextGame implements Runnable{
     }
     
     private void chooseCommand(Player player){
-        System.out.println("Игрок" + (currentPlayerIndex%players.size()+1) + ": ");
+        System.out.println("Игрок" + (currentPlayerIndex%game.getPlayers().size()+1) + ": ");
         System.out.println("Ваш бюджет " + player.getCash());
         System.out.println("Ваши компании: ");
         for (Company c: player.getMyCompanies()) {
@@ -97,13 +77,11 @@ public class TextGame implements Runnable{
             if (i == 1) {
                 game.makeMove(player);
             } else if (i == 2) {
-                game.buildCompany(player, (Company) field.getCells().get(currentPlayer.getCurrentPosition()));
+                game.buildCompany(player, (Company) game.getField().getCells().get(currentPlayer.getCurrentPosition()));
                 canBuildCompany = false;
                 chooseCommand(player);
             }
         }else {
-            //System.out.println("3 - Предложить сделку");
-
             int i = scanner.nextInt();
             while (i != 1) {
                 System.out.println("Введенная команда неверная попробуйте еще раз");
@@ -115,7 +93,7 @@ public class TextGame implements Runnable{
     }
 
     private void chooseCompanyCommand(){
-        Company company = (Company) field.getCells().get(currentPlayer.getCurrentPosition());
+        Company company = (Company) game.getField().getCells().get(currentPlayer.getCurrentPosition());
         System.out.println("Введите: ");
         System.out.println("1 - купить компанию за " + company.getPurchasePrice());
         System.out.println("2 - не покупать");
@@ -161,7 +139,7 @@ public class TextGame implements Runnable{
             n = scanner.nextInt();
         }
 
-        Casino casino = (Casino) field.getCells().get(currentPlayer.getCurrentPosition());
+        Casino casino = (Casino) game.getField().getCells().get(currentPlayer.getCurrentPosition());
 
         if(n == 1){
             rollOneDice(casino.play(1000, 2, currentPlayer, game));
@@ -172,7 +150,7 @@ public class TextGame implements Runnable{
 
     private void chooseRialtoCommand(){
         System.out.println("Чтобы выйти из тюрьмы: ");
-        Rialto rialto = (Rialto) field.getCells().get(currentPlayer.getCurrentPosition());
+        Rialto rialto = (Rialto) game.getField().getCells().get(currentPlayer.getCurrentPosition());
         int n = 0;
         if (currentPlayer.getCountOfThrowsInPrison() == 3) {
             System.out.println("1 - заплатить 500");
@@ -197,7 +175,7 @@ public class TextGame implements Runnable{
             }
 
             if(n == 2){
-                render(rialto.rollDice(currentPlayer, game), Steps.DRAW_DICE, field, null);
+                render(rialto.rollDice(currentPlayer, game), Steps.DRAW_DICE, null);
             } else{
                 rialto.payToExit(currentPlayer);
                 currentPlayer.setCountOfThrowsInPrison(0);
@@ -321,7 +299,7 @@ public class TextGame implements Runnable{
             canBuildCompany = true;
             currentPlayerIndex++;
         }
-        currentPlayer = players.get(currentPlayerIndex % players.size());
+        currentPlayer = game.getPlayers().get(currentPlayerIndex % game.getPlayers().size());
         chooseCommand(currentPlayer);
     }
 
@@ -330,7 +308,7 @@ public class TextGame implements Runnable{
             canBuildCompany = true;
             currentPlayerIndex++;
         }
-        currentPlayer = players.get(currentPlayerIndex % players.size());
+        currentPlayer = game.getPlayers().get(currentPlayerIndex % game.getPlayers().size());
         chooseCommand(currentPlayer);
     }
 }

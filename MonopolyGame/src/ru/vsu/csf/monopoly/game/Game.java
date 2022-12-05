@@ -1,7 +1,8 @@
 package ru.vsu.csf.monopoly.game;
 
 import ru.vsu.csf.monopoly.cells.*;
-import ru.vsu.csf.monopoly.player.Player;
+import ru.vsu.csf.monopoly.graphics.GraphicPlayer;
+import ru.vsu.csf.monopoly.objects.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,17 +10,32 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Game {
+
+    private List<Color> colors = Arrays.asList(Color.RED, Color.BLUE, Color.ORANGE, Color.GREEN);
     private Runnable runnable;
     private int playersCount;
     private List<Player> players;
     private PlayingField field;
 
 
-    public Game(int playersCount, PlayingField field, Runnable runnable, List<Player> players) {
+    public Game(int playersCount, Runnable runnable) {
         this.runnable = runnable;
         this.playersCount = playersCount;
-        this.field = field;
-        this.players = players;
+        this.field = new PlayingField();
+        field.generateField();
+        players = new ArrayList<>();
+        int s = 0;
+        for (int i = 0; i < playersCount; i++) {
+            GraphicPlayer player = new GraphicPlayer(0, s, 200, colors.get(i), 0, 15000, field, new ArrayList<>(), 0);
+            s += 200;
+            players.add(player);
+        }
+        Cell start = field.getCells().get(0);
+        ArrayList<Player> p = new ArrayList<>();
+        for (Player pl : players) {
+            p.add(pl);
+        }
+        start.setPlayers(p);
     }
 
 
@@ -34,7 +50,7 @@ public class Game {
             }
         } else {
             int[] dice = player.rollDice();
-            runnable.render(dice, Runnable.Steps.DRAW_DICE, field, "");
+            runnable.render(dice, Runnable.Steps.DRAW_DICE, "");
 
             Cell currentCell = player.getPlayingField().getCells().get(player.getCurrentPosition());
             List<Player> p = currentCell.getPlayers();
@@ -53,12 +69,12 @@ public class Game {
 
     public void buildCompany(Player player, Company company){
         if(player.getCompaniesToBuild().size() == 0){
-            runnable.render(null, Runnable.Steps.DRAW_STRING, field, "У вас недостаточно компаний, чтобы построить филиал");
+            runnable.render(null, Runnable.Steps.DRAW_STRING, "У вас недостаточно компаний, чтобы построить филиал");
         } else {
             if(player.getCash() >= 1500) {
                 player.build(company);
             } else{
-                runnable.render(null, Runnable.Steps.DRAW_STRING, field, "У вас недостаточно средств для постройки");
+                runnable.render(null, Runnable.Steps.DRAW_STRING, "У вас недостаточно средств для постройки");
             }
         }
     }

@@ -2,14 +2,12 @@ package ru.vsu.csf.monopoly.cells;
 
 import ru.vsu.csf.monopoly.game.Game;
 
-import ru.vsu.csf.monopoly.game.GraphicGame;
 import ru.vsu.csf.monopoly.game.Runnable;
-import ru.vsu.csf.monopoly.player.Player;
+import ru.vsu.csf.monopoly.objects.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Rialto extends Cell implements CellActions{
     private Random rnd = new Random();
@@ -32,11 +30,11 @@ public class Rialto extends Cell implements CellActions{
         if(dice[0] == dice[1]){
             player.setPrisonForVisit(true);
             player.setCountOfThrowsInPrison(0);
-            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы вышли из тюрьмы");
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, "Вы вышли из тюрьмы");
 
         }else{
             player.setCountOfThrowsInPrison(player.getCountOfThrowsInPrison()+1);
-            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы остаетесь в тюрьме");
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, "Вы остаетесь в тюрьме");
         }
 
         return dice;
@@ -44,9 +42,9 @@ public class Rialto extends Cell implements CellActions{
 
     public void makeMove(Player player, Game game){
         if(player.isPrisonForVisit()) {
-            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы попали на биржу");
+            game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, "Вы попали на биржу");
         } else{
-            game.getRunnable().render(null, Runnable.Steps.CHOOSE_RIALTO_COMMAND, game.getField(), "");
+            game.getRunnable().render(null, Runnable.Steps.CHOOSE_RIALTO_COMMAND, "");
         }
     }
 }

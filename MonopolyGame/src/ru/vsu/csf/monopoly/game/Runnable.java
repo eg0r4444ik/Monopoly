@@ -1,10 +1,8 @@
 package ru.vsu.csf.monopoly.game;
 
-import ru.vsu.csf.monopoly.player.Player;
-
 public interface Runnable {
 
-    public void render(int[] dices, GraphicGame.Steps step, PlayingField field, String str);
+    public void render(int[] dices, GraphicGame.Steps step, String str);
 
     public enum Steps {
         CHOOSE_COMMAND,

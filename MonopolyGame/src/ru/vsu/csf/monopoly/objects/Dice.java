@@ -1,4 +1,4 @@
-package ru.vsu.csf.monopoly.graphics;
+package ru.vsu.csf.monopoly.objects;
 
 import ru.vsu.csf.monopoly.graphics.DrawUtils;
 

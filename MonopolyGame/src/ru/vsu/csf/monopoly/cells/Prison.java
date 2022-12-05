@@ -2,9 +2,8 @@ package ru.vsu.csf.monopoly.cells;
 
 import ru.vsu.csf.monopoly.game.Game;
 
-import ru.vsu.csf.monopoly.game.GraphicGame;
 import ru.vsu.csf.monopoly.game.Runnable;
-import ru.vsu.csf.monopoly.player.Player;
+import ru.vsu.csf.monopoly.objects.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,6 +30,6 @@ public class Prison extends Cell implements CellActions{
         p.add(player);
         currentCell.setPlayers(p);
 
-        game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, game.getField(), "Вы отправляетесь в тюрьму");
+        game.getRunnable().render(null, Runnable.Steps.DRAW_STRING, "Вы отправляетесь в тюрьму");
     }
 }

@@ -1,10 +1,9 @@
 package ru.vsu.csf.monopoly.graphics;
 
 import ru.vsu.csf.monopoly.cells.Company;
-import ru.vsu.csf.monopoly.player.Player;
+import ru.vsu.csf.monopoly.objects.Player;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DrawUtils {
